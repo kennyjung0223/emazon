@@ -6,8 +6,8 @@ Final project for CSE 106 Fall 2021 Semester. The web-based application is a spi
 To run the application, execute the following commands in the command line:
 ```bash
 # Clone the repository and access it
-git clone https://github.com/robokae/CSE-106-Lab-8.git
-cd CSE-106-Lab-8
+git clone https://github.com/kennyjung0223/emazon
+cd emazon
 
 # Create a Python virtual environment
 python3 -m venv venv

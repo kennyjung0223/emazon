@@ -2,6 +2,10 @@ from flask import Flask, render_template, request, url_for, redirect
 
 app = Flask(__name__)
 
+@app.route("/")
+def initial():
+    return redirect(url_for("login"))
+
 @app.route("/login", methods = ['POST', 'GET'])
 def login():
     if request.method == "POST":

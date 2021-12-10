@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, url_for, redirect
 
 app = Flask(__name__)
 
-@app.route("/", methods = ['POST', 'GET'])
+@app.route("/login", methods = ['POST', 'GET'])
 def login():
     if request.method == "POST":
         print("Post has executed")
@@ -20,7 +20,7 @@ def register():
         print("Get has executed")
         # return render_template("register.html")
 
-@app.route("/search", methods = ['POST', 'GET'])
+@app.route("/search", methods = ['POST', 'GET']) #This is the products page
 def search():
     if request.method == "POST":
         print("Post has executed")

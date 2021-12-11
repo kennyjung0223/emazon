@@ -87,5 +87,32 @@ print(orderForLebron)
 
 orderDetailsForLebron = OrderDetail.query.filter_by(order_id = orderForLebron.id).all()
 print(orderDetailsForLebron)
-for orderProducts in orderDetailsForLebron:
-	print("Product: " + orderProducts.product.name + " Count: " + str(order_detail.count))
+
+orderProductsForLebronList = []
+for orderProduct in orderDetailsForLebron:
+	print("Product: " + orderProduct.product.name + " Count: " + str(orderProduct.count))
+	orderProductsForLebronList.append({"Product":orderProduct.product.name, "Count":orderProduct.count, "Price":orderProduct.product.price, "Image":orderProduct.product.picture})
+
+orderForLebronDic = {}
+orderForLebronDic['Name'] = lebron.name
+orderForLebronDic['Products'] = orderProductsForLebronList
+orderForLebronDic['Subtotal'] = orderForLebron.subtotal
+orderForLebronDic['Tax'] = orderForLebron.tax
+orderForLebronDic['Shipping Fee'] = orderForLebron.shipping_fee
+print("\n\n")
+print(orderForLebronDic)
+print()
+print("Name: " + orderForLebronDic['Name'])
+print("Products: ")
+for eachProduct in orderForLebronDic['Products']:
+	print("\t"+eachProduct['Product'])
+	print("\tCount: "+ str(eachProduct['Count']))
+	print("\tPrice: "+ str(eachProduct['Price']))
+	print("\tImage: "+ str(eachProduct['Image']))
+	print()
+print("Subtotal: "+ str(orderForLebronDic['Subtotal']))
+print("Tax: "+ str(orderForLebronDic['Tax']))
+print("Shipping Fee: "+ str(orderForLebronDic['Shipping Fee']))
+print("For adding to checkout-------------------------------------")
+print("Street Address: "+ orderForLebron.address.street)
+print("payment information")

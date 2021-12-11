@@ -5,7 +5,7 @@ app = Flask(__name__)
 # This is the home page (aka the products page)
 @app.route("/")
 def index():
-    return render_template('home.html', show_navbar=True)
+    return render_template('home.html', show_navbar=True, signed_in=False)
 
 
 @app.route("/login", methods = ['POST', 'GET'])

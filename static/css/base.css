@@ -1,0 +1,11 @@
+/* Styling for the base page */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    width: 100vw;
+    height: 88px;
+    background-color: #18232C;
+}

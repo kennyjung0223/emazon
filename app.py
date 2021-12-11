@@ -2,10 +2,10 @@ from flask import Flask, render_template, request, url_for, redirect
 
 app = Flask(__name__)
 
-# This is the products page (aka, the home page)
+# This is the home page (aka the products page)
 @app.route("/")
 def index():
-    return render_template('index.html')
+    return render_template('home.html', show_navbar=True)
 
 
 @app.route("/login", methods = ['POST', 'GET'])
@@ -34,14 +34,14 @@ def searchProduct(product):
 
     # Retrieve database information corresponding to the searched product
 
-    return render_template('search_results.html')
+    return render_template('search_results.html', show_navbar=True)
 
 
 @app.route("/product/<product_name>", methods = ['GET'])
 def productInfo(product_name):
     print('Product details for ', product_name)
         
-    return render_template('product_details.html')
+    return render_template('product_details.html', show_navbar=True)
     
 
 @app.route("/cart", methods = ['POST', 'GET'])
@@ -58,7 +58,7 @@ def shoppingCart():
         #   return redirect(url_for("checkout"))
 
     # GET request - return cart page to the client
-    return render_template("cart.html")
+    return render_template("cart.html", show_navbar=True)
 
 @app.route("/checkout", methods = ['POST', 'GET'])
 def checkout():
@@ -79,7 +79,7 @@ def checkout():
 def orderConfirmation():
     print("Order confirmation")
     
-    return render_template("order_confirmation.html")
+    return render_template("order_confirmation.html", show_navbar=True)
 
 
 if __name__ == "__main__":

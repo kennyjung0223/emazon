@@ -50,6 +50,7 @@ productInfoDic = {
 print(productInfoDic)
 productInfoDicJson = json.dumps(productInfoDic)
 print(productInfoDicJson)
+print()
 print("Product Name: " + productInfoDic['name'])
 print("Description: " + productInfoDic['description'])
 print("Price: " + str(productInfoDic['price']))
@@ -58,12 +59,23 @@ print("Sold by: " + productInfoDic['brand'])
 print("Category: " + productInfoDic['category'])
 print("Available units: " + str(productInfoDic['stock count']))
 productReview = Review.query.filter_by(product_id = product.id).all()
+listOfReviewsForProduct = []
 print(productReview)
-print("Reviews for "+ productInfoDic['name'] +": ")
 for eachReview in productReview:
-	print("\tReview: " + eachReview.description)
-	print("\tRating: " + str(eachReview.rating))
+	temp = {
+		'Review':eachReview.description,
+		'Rating':eachReview.rating
+	}
+	listOfReviewsForProduct.append(temp)
+print(listOfReviewsForProduct)
+productInfoDic['Reviews'] = listOfReviewsForProduct
+print("Reviews for "+ productInfoDic['name'] +": ")
+for eachReview in productInfoDic['Reviews']:
+	print("\tReview: " + eachReview['Review'])
+	print("\tRating: " + str(eachReview['Rating']))
 	print()
+print(productInfoDic)
+print(json.dumps(productInfoDic))
 
 print("-------------------------------------------------------------\n\n\n")
 
@@ -94,6 +106,7 @@ for i in range(len(allProducts)):
 
 lebronUsername = 'ljames'
 lebron = User.query.filter_by(username = lebronUsername).first()
+print()
 print("Name: " + lebron.name)
 print("ID: " + str(lebron.id))
 
@@ -133,4 +146,5 @@ print("Shipping Fee: "+ str(orderForLebronDic['Shipping Fee']))
 print("Total: " + str(orderForLebronDic['Subtotal'] + orderForLebronDic['Tax'] + orderForLebronDic['Shipping Fee']))
 print("Address: \n\t"+ orderForLebron.address.street + "\n\t" + orderForLebron.address.city + " " + orderForLebron.address.postal_code)
 print("payment information")
+print(json.dumps(orderForLebronDic))
 

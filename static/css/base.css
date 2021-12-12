@@ -129,3 +129,7 @@ h1 {
 .fas {
     font-size: 20px;
 }
+
+.content {
+    position: relative;
+}

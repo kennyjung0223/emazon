@@ -32,10 +32,12 @@ print("------------------- ORDER DETAILS -------------------")
 for order_detail in order_details:
     print(order_detail.id, order_detail.order_id, order_detail.product.name, order_detail.count)
 
+print("\nSearching for one product (example: iPhone 13 Pro)-------------------------------------------")
+
 productName = 'iPhone 13 Pro'
 product = Product.query.filter_by(name = productName).first()
 print(product)
-print(product.id, product.name, product.description, product.price, product.picture, product.brand, product.category, product.stock_count)
+# print(product.id, product.name, product.description, product.price, product.picture, product.brand, product.category, product.stock_count)
 productInfoDic = {
 	'name':product.name,
 	'description':product.description,
@@ -48,6 +50,20 @@ productInfoDic = {
 print(productInfoDic)
 productInfoDicJson = json.dumps(productInfoDic)
 print(productInfoDicJson)
+print("Product Name: " + productInfoDic['name'])
+print("Description: " + productInfoDic['description'])
+print("Price: " + str(productInfoDic['price']))
+print("Image: " + productInfoDic['picture'])
+print("Sold by: " + productInfoDic['brand'])
+print("Category: " + productInfoDic['category'])
+print("Available units: " + str(productInfoDic['stock count']))
+productReview = Review.query.filter_by(product_id = product.id).all()
+print(productReview)
+print("Reviews for "+ productInfoDic['name'] +": ")
+for eachReview in productReview:
+	print("\tReview: " + eachReview.description)
+	print("\tRating: " + str(eachReview.rating))
+	print()
 
 print("-------------------------------------------------------------\n\n\n")
 
@@ -111,8 +127,10 @@ for eachProduct in orderForLebronDic['Products']:
 	print("\tImage: "+ str(eachProduct['Image']))
 	print()
 print("Subtotal: "+ str(orderForLebronDic['Subtotal']))
+print("For adding to checkout-------------------------------------")
 print("Tax: "+ str(orderForLebronDic['Tax']))
 print("Shipping Fee: "+ str(orderForLebronDic['Shipping Fee']))
-print("For adding to checkout-------------------------------------")
-print("Street Address: "+ orderForLebron.address.street)
+print("Total: " + str(orderForLebronDic['Subtotal'] + orderForLebronDic['Tax'] + orderForLebronDic['Shipping Fee']))
+print("Address: \n\t"+ orderForLebron.address.street + "\n\t" + orderForLebron.address.city + " " + orderForLebron.address.postal_code)
 print("payment information")
+

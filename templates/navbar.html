@@ -1,0 +1,36 @@
+{% macro navbar() -%} 
+    <nav class="navbar">
+        <div class="navbar-content-container">
+            <div class="navbar-content-left">
+                <h1 class="logo">emazon</h1>
+            </div>
+            <div class="navbar-content-right">
+                <div class="search-bar-container">
+                    <div class="search-bar-left">
+                        <input 
+                            type="text" 
+                            class="search-bar-input-field"
+                            placeholder="Search for a product..."
+                        >
+                    </div>
+                    <div class="search-bar-right">
+                        <button class="search-button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                {% if signed_in == True %}
+                    <button class="user-button">
+                        <i class="fas fa-user-circle"></i>
+                    </button>
+                {% else %} 
+                    <button class="sign-in-button">Sign in</button>
+                {% endif %}
+                <button class="cart-button">
+                    <i class="fas fa-shopping-cart"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+{%- endmacro %}
+

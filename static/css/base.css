@@ -1,0 +1,135 @@
+/* Styling for the base page */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #18232C;
+    color: #F8F8F8;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+
+.navbar {
+    width: 100vw;
+    height: 88px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #283A46;
+}
+
+.navbar-content-container {
+    width: 95%;
+    height: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-content-right {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    height: 48px;
+}
+.search-bar-container {
+    height: 100%;
+    width: 300px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 1px solid #283A46;
+    border-radius: 8px;
+}
+
+.search-bar-left {
+    width: 85%;
+}
+
+.search-bar-right {
+    width: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-bar-input-field {
+    width: 90%;
+    background-color: transparent;
+    color: #F8F8F8;
+    border: none;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    margin-left: 16px;
+}
+
+::placeholder {
+    color: #5B6A78;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
+
+.search-bar-input-field:focus {
+    outline: none;
+}
+
+.search-button,
+.sign-in-button,
+.cart-button {
+    background-color: transparent;
+    border: none;
+    color: #F8F8F8;
+}
+
+.search-button {
+    color: #5B6A78;
+}
+
+.search-button:hover {
+    cursor: pointer;
+}
+
+.sign-in-button {
+    padding: 0 20px;
+    height: 48px;
+    box-sizing: border-box;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    outline: 1px solid #F8F8F8;
+    border-radius: 8px;
+    transition: all .35s ease-in-out;
+    box-sizing: border-box;
+}
+
+.sign-in-button:hover {
+    outline: none;
+    background-color: #08D99A;
+    color: #18232C;
+    border: none;
+    cursor: pointer;
+}
+
+.cart-button {
+    padding: 0 20px;
+    transition: all .35s ease-in-out;
+}
+
+.cart-button:hover {
+    background-color: #28353F;
+    border-radius: 8px;
+    cursor: pointer;
+}   
+
+.fas {
+    font-size: 20px;
+}
+
+.content {
+    position: relative;
+}

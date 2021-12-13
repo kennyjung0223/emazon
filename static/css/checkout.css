@@ -8,6 +8,7 @@
 
 .checkout-page-left-container,
 .checkout-page-right-container {
+    height: 100%;
     padding: 2.5%;
 }
 

@@ -60,9 +60,17 @@ def productInfo(product_name):
         }
         listOfReviewsForProduct.append(temp)
     productInfoDic['Reviews'] = listOfReviewsForProduct
-    # productInfoDic looks like this when outputted:
-    # {'name': 'iPhone 13 Pro', 'description': 'The newest iPhone right now!', 'price': 1199.99, 'picture': 'default.jpg', 'brand': 'Apple', 
-    # 'category': 'Electronics', 'stock count': 5, 'Reviews': [{'Review': 'This phone is absolutely amazing!', 'Rating': 5}, {'Review': 'This phone sucks!', 'Rating': 1}]}
+    # productInfoDic looks like this when outputted with the example of 'iPhone 13 Pro':
+    # {
+        #  'name': 'iPhone 13 Pro', 
+        #  'description': 'The newest iPhone right now!',
+        #  'price': 1199.99,
+        #  'picture': 'default.jpg',
+        #  'brand': 'Apple', 
+        #  'category': 'Electronics',
+        #  'stock count': 5,
+        #  'Reviews': [{'Review': 'This phone is absolutely amazing!', 'Rating': 5}, {'Review': 'This phone sucks!', 'Rating': 1}]
+    # }
         
     return render_template('product_details.html', show_navbar=True)
     

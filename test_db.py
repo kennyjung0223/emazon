@@ -104,6 +104,8 @@ print("\n\nJSON versions")
 for i in range(len(allProducts)):
 	print(listOfAllProductDicsJson[i])
 
+print(listOfAllProductDics)
+
 lebronUsername = 'ljames'
 lebron = User.query.filter_by(username = lebronUsername).first()
 print()
@@ -143,6 +145,7 @@ print("Subtotal: "+ str(orderForLebronDic['Subtotal']))
 print("For adding to checkout-------------------------------------")
 print("Tax: "+ str(orderForLebronDic['Tax']))
 print("Shipping Fee: "+ str(orderForLebronDic['Shipping Fee']))
+
 print("Total: " + str(orderForLebronDic['Subtotal'] + orderForLebronDic['Tax'] + orderForLebronDic['Shipping Fee']))
 print("Address: \n\t"+ orderForLebron.address.street + "\n\t" + orderForLebron.address.city + " " + orderForLebron.address.postal_code)
 print("payment information")

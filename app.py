@@ -109,6 +109,7 @@ def productInfo(product_name):
     return render_template('product_details.html', show_navbar=True)
     
 
+# Not sure whether to add a username argument for this app route or if username will be a variable you can call throughout the program with the use of Flask Logun
 @app.route("/cart", methods = ['POST', 'GET'])
 def shoppingCart():
     # POST request - Handle change in quantity removing an item from the cart

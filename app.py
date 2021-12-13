@@ -171,7 +171,7 @@ def checkout():
         # 'Shipping Fee': 5.0,
         # 'Total': 87.47
     # }
-    return render_template("checkout.html")
+    return render_template("checkout.html", show_navbar=True)
 
 @app.route("/order_confirmation", methods = ['GET'])
 def orderConfirmation():

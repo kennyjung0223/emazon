@@ -1,1 +1,32 @@
 /* Styles for the home page */
+.hero-container{
+    position: relative;
+    text-align: center;
+}
+
+.hero{
+    min-width: 100%;
+    height: auto;
+}
+
+.hero-text{
+    position: absolute;
+    top: 40%;
+    left: 34.75%;
+    font-size: 1.3vw;
+}
+
+.deals-container{
+    padding-top: 3vh;
+    padding-bottom: 3vh;
+}
+
+.deals-title{
+    font-size: 1.67rem;
+    margin-left: 5vw;
+    margin-bottom: 1rem;
+}
+
+.deals-card{
+    display: grid;
+}

@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/product_details.css') }}">
+{% endblock %} 
+{% block title %}Product Details{% endblock %}
+{% block content %}     
+    <div class="product-details-page-container">
+        <div class="product-details-content">
+            <div class="product-details-left">
+                <div class="product-image">
+
+                </div>
+            </div>
+            <div class="product-details-right">
+                <div class="product-details-right-top">
+                    <h1 class="title">iPhone 13 Pro</h1>
+                    <div class="reviews-display">
+                        <div class="reviews-display-left">
+                            {% for i in range(5)  %}
+                                <i class="fas fa-star"></i>
+                            {% endfor %}
+                        </div>
+                        <div class="reviews-display-right">
+                            <p>3 reviews</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-details-right-center">
+                    <p class="product-description">Habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas sed tempus urna et pharetra pharetra massa massa ultricies mi quis hendrerit dolor</p>
+                    <h2 class="product-price">$1.59</h2>
+                </div>
+                <div class="product-details-right-bottom">
+                    <div class="quantity-container">
+                        <div class="quantity-container-left">
+                            <p>Qty:</p>
+                        </div>
+                        <div class="quantity-container-right">
+                            <div class="quantity-button-container">
+                                <button class="add-button">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <p class="quantity">1</p>
+                                <button class="minus-button">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="add-to-cart-button">Add to cart</button>
+                </div>
+            </div>
+        </div>
+        <div class="customer-reviews-container">
+            <div class="customer-reviews-content">
+                <h1 class="title">Customer reviews</h1>
+                <div class="customer-reviews">
+                    {% for i in range(3) %}
+                        <div class="review-container">
+                            <h3 class="reviewer-name">John Smith</h3>
+                            <div class="reviews-display">
+                                <div class="reviews-display-left">
+                                    {% for i in range(5) %}
+                                        <i class="fas fa-star"></i>
+                                    {% endfor %}
+                                </div>
+                                <div class="reviews-display-right">
+                                    <p>Purchased 3 days ago</p>
+                                </div>
+                            </div>
+                            <p class="review-text">This is the best product ever! Highly recommend this brand. 5/5</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,44 @@
+/* Styles for the order confirmation page */
+.order-confirmation-page-container {
+    width: 100%;
+    padding: 2.5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 64px;
+}
+
+.order-confirmation-details-container {
+    width: 35%;
+    padding: 32px;
+    border: 1px solid #283A46;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.order-confirmation-details-container h2 {
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+}
+
+.order-confirmation-details-container div {
+    display: flex; 
+    flex-direction: column;
+    gap: 8px;
+}
+
+.continue-shopping-button {
+    padding: 16px;
+    background-color: #08D99A;
+    color: #18232C;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    border: none;
+    border-radius: 8px;
+}
+
+.continue-shopping-button:hover {
+    cursor: pointer;
+}

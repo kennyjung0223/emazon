@@ -28,7 +28,7 @@
     background-color: #182228;
     color: #F8F8F8;
 
-    padding: 0.50rem;
+    padding: 0.67rem;
     min-width: 67%;
     min-height: 3rem;
     border: 0.0625rem solid #283A46;
@@ -70,7 +70,7 @@
 }
 
 .register-text{
-    font-size: 0.95rem;
+    font-size: 0.80rem;
     margin-bottom: 1.67rem;
     color: #F8F8F8;
 }

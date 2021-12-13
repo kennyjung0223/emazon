@@ -1,17 +1,23 @@
 from flask import Flask, render_template, request, url_for, redirect
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import DataRequired, Email, Length
+from wtforms.validators import DataRequired, Email, Length, EqualTo
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'testkey'
 
 
 class LoginForm(FlaskForm):
-    username = StringField(label='username', validators=[DataRequired(), Length(min=3, max=15)])
-    password = PasswordField(label='password', validators=[DataRequired(), Length(min=6, max=80)])
-    rememberMe = BooleanField(label='remember me')
+    email = StringField(validators=[DataRequired(), Length(min=3, max=15)])
+    password = PasswordField(validators=[DataRequired(), Length(min=8, max=80)])
+    rememberMe = BooleanField()
     submit = SubmitField(label='Sign in')
+
+class RegisterForm(FlaskForm):
+    email = StringField(validators=[DataRequired(), Length(min=3, max=15)])
+    password = PasswordField(validators=[DataRequired(), Length(min=8, max=80)])
+    confirmPassword = PasswordField(validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField(label='Create account')
 
 
 # This is the home page (aka the products page)
@@ -33,12 +39,13 @@ def login():
 
 @app.route("/register", methods=['POST', 'GET'])
 def register():
+    form = RegisterForm()
     # POST request - Handle form data from client
     if request.method == "POST":
         print('Register')
 
     # Otherwise GET request - Return register page to client
-    return render_template('register.html')
+    return render_template('register.html', form=form)
 
 
 @app.route("/search/<product>", methods=['GET'])

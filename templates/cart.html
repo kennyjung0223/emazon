@@ -3,6 +3,71 @@
     <link rel="stylesheet" href="{{  url_for('static', filename='css/cart.css') }}">
 {% endblock %}
 {% block title %}Cart{% endblock %} 
-{% block content %} 
-    <p>Cart page</p>
+{% block content %}  
+    <div class="cart-page-container">
+        <div class="cart-page-left-container">
+            <div class="cart">
+                <h1 class="title">Shopping cart (3 items)</h1>
+                <div class="cart-items">
+                    {% for i in range(3) %}
+                        <div class="cart-item-container">
+                            <div class="cart-item-content">
+                                <div class="cart-item-content-left">
+                                    <div class="product-thumbnail"></div>
+                                </div>
+                                <div class="cart-item-content-center">
+                                    <h3 class="cart-item-name">iPhone 13 Pro</h3>
+                                    <div class="cart-item-content-center-bottom">
+                                        <div class="quantity-container">
+                                            <div class="quantity-container-left">
+                                                <p>Qty:</p>
+                                            </div>
+                                            <div class="quantity-container-right">
+                                                <div class="quantity-button-container">
+                                                    <button class="add-button">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                    <p class="quantity">1</p>
+                                                    <button class="minus-button">
+                                                        <i class="fas fa-minus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="remove-item-button">Remove</button>
+                                    </div>
+                                </div>
+                            
+                                <div class="cart-item-content-right">
+                                    <p class="cart-item-price">$1099</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="cart-page-right-container">
+            <h1 class="title">Order Summary</h1>
+            <div class="order-summary-container">
+                <div class="order-summary-top">
+                    <div class="order-subtotal-container">
+                        <p class="order-summary-info-title">Subtotal</p>
+                        <p class="order-summary-info-data">$37.76</p>
+                    </div>
+                    <div class="order-shipping-price-container">
+                        <p class="order-summary-info-title">Shipping</p>
+                        <p class="order-summary-info-data">FREE</p>
+                    </div>
+                </div>
+                <div class="order-summary-bottom">
+                    <div class="order-total-container">
+                        <div class="order-summary-info-title">Total</div>
+                        <p class="order-summary-info-data">$37.16</p>
+                    </div>
+                </div>
+            </div>
+            <button class="checkout-button">Checkout</button>
+        </div>
+    </div>
 {% endblock %}

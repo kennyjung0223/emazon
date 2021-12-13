@@ -73,7 +73,7 @@ def checkout():
         #   return redirect(url_for("orderConfirmation"))
     
     # GET request - return checkout page to client
-    return render_template("checkout.html")
+    return render_template("checkout.html", show_navbar=True)
 
 @app.route("/order_confirmation", methods = ['GET'])
 def orderConfirmation():

@@ -169,12 +169,12 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 16px 0;
+    padding: 8px 0;
 }
 
-.order-total-container {
+/* .order-total-container {
     border-top: 1px solid #283A46;
-}
+} */
 
 .checkout-button {
     padding: 16px; 

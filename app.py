@@ -39,7 +39,30 @@ def searchProduct(product):
 
 @app.route("/product/<product_name>", methods = ['GET'])
 def productInfo(product_name):
-    print('Product details for ', product_name)
+    productName = product_name
+    product = Product.query.filter_by(name = productName).first()
+    productInfoDic = {
+        'name':product.name,
+        'description':product.description,
+        'price':product.price,
+        'picture':product.picture,
+        'brand':product.brand,
+        'category':product.category,
+        'stock count':product.stock_count
+    }
+    productReview = Review.query.filter_by(product_id = product.id).all()
+    listOfReviewsForProduct = []
+    print(productReview)
+    for eachReview in productReview:
+        temp = {
+            'Review':eachReview.description,
+            'Rating':eachReview.rating
+        }
+        listOfReviewsForProduct.append(temp)
+    productInfoDic['Reviews'] = listOfReviewsForProduct
+    # productInfoDic looks like this when outputted:
+    # {'name': 'iPhone 13 Pro', 'description': 'The newest iPhone right now!', 'price': 1199.99, 'picture': 'default.jpg', 'brand': 'Apple', 
+    # 'category': 'Electronics', 'stock count': 5, 'Reviews': [{'Review': 'This phone is absolutely amazing!', 'Rating': 5}, {'Review': 'This phone sucks!', 'Rating': 1}]}
         
     return render_template('product_details.html', show_navbar=True)
     

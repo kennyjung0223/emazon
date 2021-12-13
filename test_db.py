@@ -38,6 +38,7 @@ productName = 'iPhone 13 Pro'
 product = Product.query.filter_by(name = productName).first()
 print(product)
 # print(product.id, product.name, product.description, product.price, product.picture, product.brand, product.category, product.stock_count)
+
 productInfoDic = {
 	'name':product.name,
 	'description':product.description,

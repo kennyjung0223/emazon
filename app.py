@@ -146,6 +146,7 @@ def checkout():
         print('User submitted the checkout form')
     
     # GET request - return checkout page to client
+
     user = User.query.filter_by(username = Username).first()
     orderForUser = Order.query.filter_by(user_id = user.id).first()
 

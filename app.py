@@ -122,13 +122,21 @@ def productInfo(product_name):
     productReview = Review.query.filter_by(product_id = product.id).all()
     listOfReviewsForProduct = []
     print(productReview)
+
+    sum = 0
+
     for eachReview in productReview:
         temp = {
             'Review':eachReview.description,
             'Rating':eachReview.rating
         }
+        sum += eachReview.rating
         listOfReviewsForProduct.append(temp)
-    productInfoDic['Reviews'] = listOfReviewsForProduct
+
+    avg_rating = int(sum / len(productReview))
+
+    productInfoDic['reviews'] = listOfReviewsForProduct
+    productInfoDic['avg_rating'] = avg_rating
     # productInfoDic looks like this when outputted with the example of 'iPhone 13 Pro':
     # {
         #  'name': 'iPhone 13 Pro', 
@@ -140,7 +148,7 @@ def productInfo(product_name):
         #  'stock count': 5,
         #  'Reviews': [{'Review': 'This phone is absolutely amazing!', 'Rating': 5}, {'Review': 'This phone sucks!', 'Rating': 1}]
     # }
-    return render_template('product_details.html', show_navbar=True)
+    return render_template('product_details.html', show_navbar=True, product_info=productInfoDic)
 
   
 # Not sure whether to add a username argument for this app route or if username will be a variable you can call throughout the program with the use of Flask Logun
@@ -177,25 +185,46 @@ def shoppingCart():
 def checkout():
     # POST request - Handle form data from the client
     if request.method == "POST":
-        print('User submitted the checkout form')
+        print('User submitted the checkout form')\
+
+        card_name = request.form.get('card_name')
+        card_num = request.form.get('card_num')
+        card_exp_date = request.form.get('card_exp')
+        card_cvc = request.form.get('card_cvc')
+
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        address = request.form.get('address')
+        city = request.form.get('city')
+        state = request.form.get('state')
+        zip_code = request.form.get('zip_code')
+
+        card_data = {
+            'number': str(card_num),
+            'exp_month': int(card_exp_date[0:2]),
+            'exp_year': int(card_exp_date[3:5]),
+            'cvc': str(card_cvc)
+        }
+        
     # GET request - return checkout page to client
 
-    user = User.query.filter_by(username = Username).first()
-    orderForUser = Order.query.filter_by(user_id = user.id).first()
+    # user = User.query.filter_by(username = Username).first()
+    # orderForUser = Order.query.filter_by(user_id = user.id).first()
 
-    orderDetailsForUser = OrderDetail.query.filter_by(order_id = orderForUser.id).all()
+    # orderDetailsForUser = OrderDetail.query.filter_by(order_id = orderForUser.id).all()
 
-    orderProductsForUserList = []
-    for orderProduct in orderDetailsForUser:
-        orderProductsForUserList.append({"Product":orderProduct.product.name, "Count":orderProduct.count, "Price":orderProduct.product.price, "Image":orderProduct.product.picture})
+    # orderProductsForUserList = []
+    # for orderProduct in orderDetailsForUser:
+    #     orderProductsForUserList.append({"Product":orderProduct.product.name, "Count":orderProduct.count, "Price":orderProduct.product.price, "Image":orderProduct.product.picture})
 
-    orderForUserDic = {}
-    orderForUserDic['Name'] = user.name
-    orderForUserDic['Products'] = orderProductsForUserList
-    orderForUserDic['Subtotal'] = orderForUser.subtotal
-    orderForUserDic['Tax'] = orderForUser.tax
-    orderForUserDic['Shipping Fee'] = orderForUser.shipping_fee
-    orderForUserDic['Total'] = orderForUserDic['Subtotal'] + orderForUserDic['Tax'] + orderForUserDic['Shipping Fee']
+    # orderForUserDic = {}
+    # orderForUserDic['Name'] = user.name
+    # orderForUserDic['Products'] = orderProductsForUserList
+    # orderForUserDic['Subtotal'] = orderForUser.subtotal
+    # orderForUserDic['Tax'] = orderForUser.tax
+    # orderForUserDic['Shipping Fee'] = orderForUser.shipping_fee
+    # orderForUserDic['Total'] = orderForUserDic['Subtotal'] + orderForUserDic['Tax'] + orderForUserDic['Shipping Fee']
+
     # orderForUserDic looks like this when outputted with 'ljames' username as an example
     # {
         # 'Name': 'Lebron James', 

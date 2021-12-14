@@ -9,21 +9,21 @@
             <div class="checkout-container">
                 <h1 class="title">Checkout</h1>
                 <div class="checkout-form-container">
-                    <div class="checkout-form-content">
+                    <form class="checkout-form-content" id="checkout-form-content" method="post">
                         <div class="checkout-form-content-payment">
                             <h2 class="section-title">Payment Details</h2>
-                            <form class="checkout-form checkout-form-payment" action="#" method="post">
+                            <div class="checkout-form checkout-form-payment">
                                 <input class="checkout-input" type="text" name="card_name" id="card_name" placeholder="Name on card">
                                 <input class="checkout-input" type="text" name="card_num" id="card_num" placeholder="Card Number">
                                 <div>
                                     <input class="checkout-input" type="text" name="card_exp" id="card_exp" placeholder="Expiration date (MM/YY)">
                                     <input class="checkout-input" type="text" name="card_cvc" id="card_cvc" placeholder="CVC">
                                 </div>
-                            </form>
+                            </div>
                         </div>
                         <div class="checkout-form-content-shipping">
                             <h2 class="section-title">Shipping</h2>
-                            <form class="checkout-form checkout-form-shipping" action="#" method="post">
+                            <div class="checkout-form checkout-form-shipping">
                                 <div>
                                     <input class="checkout-input" type="text" name="first_name" id="first_name" placeholder="First Name">
                                     <input class="checkout-input" type="text" name="last_name" id="last_name" placeholder="Last name">
@@ -34,9 +34,9 @@
                                     <input class="checkout-input" type="text" name="state" id="state" placeholder="State">
                                     <input class="checkout-input" type="text" name="zip_code" id="zip_code" placeholder="Zip Code">
                                 </div>
-                            </form>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -77,7 +77,7 @@
                     </div>
                 </div>
             </div>
-            <button class="place-order-button">Place order</button>
+            <button type="submit" form="checkout-form-content" class="place-order-button">Place order</button>
         </div>
     </div>
 {% endblock %} 

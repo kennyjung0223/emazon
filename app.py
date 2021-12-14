@@ -15,6 +15,7 @@ from datetime import datetime
 
 user_is_logged_in = False
 
+# session['cart items'] = []
 
 # app = Flask(__name__)
 app.config['SECRET_KEY'] = 'testkey'
@@ -246,6 +247,7 @@ def productInfo(product_name):
             #  'stock count': 5,
             #  'Reviews': [{'Review': 'This phone is absolutely amazing!', 'Rating': 5}, {'Review': 'This phone sucks!', 'Rating': 1}]
         # }
+
         return render_template('product_details.html', show_navbar=True, product_info=productInfoDic, user_is_logged_in=user_is_logged_in)
     else:
         print("do something")
@@ -305,6 +307,11 @@ def shoppingCart():
             print(item_to_remove)
             # remove product from cart_items
             cart.remove(item_to_remove)
+            cart_items=[]
+            for cart_item in cart:
+                item = Product.query.filter_by(name=cart_item).first()
+                cart_items.append(item)
+            return render_template("cart.html", show_navbar=True, cart_items=cart_items, subtotal=subtotal, total=total, user_is_logged_in=user_is_logged_in)
         elif action[0] == 'add':
             pass
     # GET request - return cart page to the client

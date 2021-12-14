@@ -25,7 +25,7 @@
 }
 
 .input-container{
-    padding-bottom: 1rem;
+    padding-bottom: 0.67rem;
 }
 
 .inputs{
@@ -51,6 +51,11 @@
 
     background-color: #08D99A;
     color: #1D2931;
+}
+.button-custom:hover{
+    background-color: transparent;
+    border: 0.0625rem solid #F8F8F8;
+    color: #F8F8F8;
 }
 
 .button-container{

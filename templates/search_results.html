@@ -12,9 +12,8 @@
         <div class="price-range-container">
             <h5 class="subtitle">Price Range</h5>
             <span class="price-range-input-container">
-                <input class="price-range-input" placeholder="Min"></input>
-                <input class="price-range-input" placeholder="Max"></input>
-                <span class="price-range-button" onclick="location.href='#';">Search</span>
+                <form method="GET" action="">
+                </form>
             </span>
             <div style="padding-bottom: 1rem;"></div>
         </div>
@@ -43,7 +42,7 @@
                 <span class="review-text">3 Stars</span>
             </div>
             <div class="review-text-container" onclick="location.href='#';">
-                {% for i in range(2)  %}
+                {% for i in range(2) %}
                     <i class="fas fa-star colored-star"></i>
                 {% endfor %}
                 {% for i in range(3)  %}
@@ -63,13 +62,11 @@
 
     <div class="search-content-container">
         <div class="search-content-title-container">
-            <h1>Search results for "Fruits"</h1>
-        </div>
-        <div class="sort-by-container">
-        HELLO
+            <h1>Search results for "{{ product }}"</h1>
         </div>
 
         <div class="products-container">
+            {% for i in products %}
             <div class="product">
                 <div class="product-image-container">
                     <a href="">
@@ -77,74 +74,21 @@
                     </a>
                 </div>
                 <div class="product-container">
-                    <h5 class="product-title">Banana</h5>
+                    <h5 class="product-title">{{ i['name'] }}</h5>
                     <div class="product-review-container">
-                        {% for i in range(5) %}
-                                <i class="fas fa-star"></i>
+                        {% for j in range(i['review']) %}
+                            <i class="fas fa-star colored-star"></i>
                         {% endfor %}
-                        <span class="holiday-review-text">2,348 reviews</span>
+                        {% for j in range(5 - i['review']) %}
+                            <i class="fas fa-star"></i>
+                        {% endfor %}
+                        <span class="holiday-review-text"></span>
                     </div>
-                    <div class="product-price">$1</div>
+                    <div class="product-price">${{ i['price'] }}</div>
                     <div class="button-custom" onclick="location.href='#';">Add to Cart</div>
                 </div>
             </div>
-
-            <div class="product">
-                <div class="product-image-container">
-                    <a href="">
-                        <img src="{{ url_for('static', filename='assets/fruits.jpg') }}" class="product-image"/>
-                    </a>
-                </div>
-                <div class="product-container">
-                    <h5 class="product-title">Banana</h5>
-                    <div class="product-review-container">
-                        {% for i in range(5) %}
-                                <i class="fas fa-star"></i>
-                        {% endfor %}
-                        <span class="holiday-review-text">2,348 reviews</span>
-                    </div>
-                    <div class="product-price">$1</div>
-                    <div class="button-custom" onclick="location.href='#';">Add to Cart</div>
-                </div>
-            </div>
-
-            <div class="product">
-                <div class="product-image-container">
-                    <a href="">
-                        <img src="{{ url_for('static', filename='assets/fruits.jpg') }}" class="product-image"/>
-                    </a>
-                </div>
-                <div class="product-container">
-                    <h5 class="product-title">Banana</h5>
-                    <div class="product-review-container">
-                        {% for i in range(5) %}
-                                <i class="fas fa-star"></i>
-                        {% endfor %}
-                        <span class="holiday-review-text">2,348 reviews</span>
-                    </div>
-                    <div class="product-price">$1</div>
-                    <div class="button-custom" onclick="location.href='#';">Add to Cart</div>
-                </div>
-            </div>
-
-            <div class="product">
-                <div class="product-image-container">
-                    <a href="">
-                        <img src="{{ url_for('static', filename='assets/fruits.jpg') }}" class="product-image"/>
-                    </a>
-                </div>
-                <div class="product-container">
-                    <h5 class="product-title">Banana</h5>
-                    <div class="product-review-container">
-                        {% for i in range(5) %}
-                                <i class="fas fa-star"></i>
-                        {% endfor %}
-                        <span class="holiday-review-text">2,348 reviews</span>
-                    </div>
-                    <div class="product-price">$1</div>
-                    <div class="button-custom" onclick="location.href='#';">Add to Cart</div>
-                </div>
-            </div>
+            {% endfor %}
 
         </div>
     </div>

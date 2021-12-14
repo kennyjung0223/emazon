@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% block title%}Home{% endblock %}
 {% block head %} 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
@@ -9,6 +10,32 @@
     <img src="{{ url_for('static', filename='assets/hero.jpg') }}" class="hero"/>
     <div class="hero-text">
         <h1>Welcome to emazon!</h1>
+    </div>
+</div>
+
+<div class="container">
+    <h3 class="card-title">Shop for the Holidays</h3>
+    <div class="holiday-cards">
+        {% for i in range(4) %}
+            <div class="holiday-card">
+                <div class="holiday-image-container">
+                    <a href="">
+                        <img src="{{ products[i].picture }}" class="holiday-image"/>
+                    </a>
+                </div>
+                <form class="holiday-container" method="post">
+                    <h5 class="holiday-title">{{ products[i].name }}</h5>
+                    <!-- <div class="holiday-review-container">
+                        {% for i in range(5)  %}
+                            <i class="fas fa-star"></i>
+                        {% endfor %}
+                        <span class="holiday-review-text">2,348 reviews</span>
+                    </div> -->
+                    <div class="holiday-price">${{ products[i].price }}</div>
+                    <button type="submit" class="button-custom" name="item" value="{{ products[i].name }}">Add to Cart</button>
+                </form>
+            </div>
+        {% endfor %}
     </div>
 </div>
 
@@ -32,88 +59,6 @@
             <img src="{{ url_for('static', filename='assets/tech.jpg') }}" class="category-image"/>
             <div class="category-text">Technology</div>
         </div>
-    </div>
-</div>
-
-<div class="container">
-    <h3 class="card-title">Shop for the Holidays</h3>
-    <div class="holiday-cards">
-        <!-- <div class="holiday-card">
-            <div class="holiday-image-container">
-                <a href="">
-                    <img src="{{ url_for('static', filename='assets/fruits.jpg') }}" class="holiday-image"/>
-                </a>
-            </div>
-            <form class="holiday-container" method="post">
-                <h5 class="holiday-title">Apple iPhone 13 Pro</h5>
-                <div class="holiday-review-container">
-                    {% for i in range(5)  %}
-                        <i class="fas fa-star"></i>
-                    {% endfor %}
-                    <span class="holiday-review-text">2,348 reviews</span>
-                </div>
-                <div class="holiday-price">$1000</div>
-                <button type="submit" class="button-custom" name="item" value="iPhone 13 Pro">Add to Cart</button>
-            </form>
-        </div> -->
-        {% for i in range(4) %}
-            <div class="holiday-card">
-                <div class="holiday-image-container">
-                    <a href="">
-                        <img src="{{ products[i].picture }}" class="holiday-image"/>
-                    </a>
-                </div>
-                <form class="holiday-container" method="post">
-                    <h5 class="holiday-title">{{ products[i].name }}</h5>
-                    <!-- <div class="holiday-review-container">
-                        {% for i in range(5)  %}
-                            <i class="fas fa-star"></i>
-                        {% endfor %}
-                        <span class="holiday-review-text">2,348 reviews</span>
-                    </div> -->
-                    <div class="holiday-price">${{ products[i].price }}</div>
-                    <button type="submit" class="button-custom" name="item" value="{{ products[i].name }}">Add to Cart</button>
-                </form>
-            </div>
-        {% endfor %}
-
-        <!-- <div class="holiday-card">
-            <div class="holiday-image-container">
-                <a href="">
-                    <img src="{{ url_for('static', filename='assets/fruits.jpg') }}" class="holiday-image"/>
-                </a>
-            </div>
-            <form class="holiday-container" method="post">
-                <h5 class="holiday-title">Apple iPhone 13 Pro</h5>
-                <div class="holiday-review-container">
-                    {% for i in range(5)  %}
-                        <i class="fas fa-star"></i>
-                    {% endfor %}
-                    <span class="holiday-review-text">2,348 reviews</span>
-                </div>
-                <div class="holiday-price">$1000</div>
-                <button type="submit" class="button-custom" name="item" value="">Add to Cart</button>
-            </form>
-        </div>
-
-        <div class="holiday-card">
-            <div class="holiday-image-container">
-                <a href="">
-                    <img src="{{ url_for('static', filename='assets/fruits.jpg') }}" class="holiday-image"/>
-                </a>
-            </div>
-            <form class="holiday-container">
-                <h5 class="holiday-title">Apple iPhone 13 Pro</h5>
-                <div class="holiday-review-container">
-                    {% for i in range(5)  %}
-                        <i class="fas fa-star"></i>
-                    {% endfor %}
-                    <span class="holiday-review-text">2,348 reviews</span>
-                </div>
-                <div class="holiday-price">$1000</div>
-                <button type="submit" class="button-custom" name="item" value="">Add to Cart</button>
-            </form>
-        </div> -->
     </div>
 </div>
 {% endblock %}

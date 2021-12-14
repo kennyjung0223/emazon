@@ -70,7 +70,7 @@
 /* ------- Remember Me, UPDATE LATER -------*/
 
 .button-container{
-    padding-top: 1rem;
+    padding-top: 0.67rem;
 }
 
 .button-custom{
@@ -84,6 +84,11 @@
     background-color: #08D99A;
     color: #1D2931;
 }
+    .button-custom:hover{
+        background-color: transparent;
+        border: 0.0625rem solid #F8F8F8;
+        color: #F8F8F8;
+    }
 
 .login-text{
     font-size: 0.80rem;

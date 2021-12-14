@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% block title%}Home{% endblock %}
 {% block head %} 
     <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
@@ -9,30 +10,6 @@
     <img src="{{ url_for('static', filename='assets/hero.jpg') }}" class="hero"/>
     <div class="hero-text">
         <h1>Welcome to emazon!</h1>
-    </div>
-</div>
-
-
-<div class="container">
-    <h3 class="card-title">Categories</h3>
-    <div class="categories">
-    <!-- Hard coded -->
-        <div class="category" onclick="location.href='#';">
-            <img src="{{ url_for('static', filename='assets/fruits.jpg') }}" class="category-image"/>
-            <div class="category-text">Fruits</div>
-        </div>
-        <div class="category" onclick="location.href='#';">
-            <img src="{{ url_for('static', filename='assets/games.jpg') }}" class="category-image"/>
-            <div class="category-text">Games</div>
-        </div>
-        <div class="category" onclick="location.href='#';">
-            <img src="{{ url_for('static', filename='assets/sports.jpg') }}" class="category-image"/>
-            <div class="category-text">Sports</div>
-        </div>
-        <div class="category" onclick="location.href='#';">
-            <img src="{{ url_for('static', filename='assets/tech.jpg') }}" class="category-image"/>
-            <div class="category-text">Technology</div>
-        </div>
     </div>
 </div>
 
@@ -92,7 +69,7 @@
                     <span class="holiday-review-text">2,348 reviews</span>
                 </div>
                 <div class="holiday-price">$1000</div>
-                <div class="button-custom" onclick="location.href='#';">Add to Cart</div>
+                <button type="submit" class="button-custom" name="item" value="Wilson Basketball 2021">Add to Cart</button>
             </div>
         </div>
 
@@ -111,8 +88,31 @@
                     <span class="holiday-review-text">2,348 reviews</span>
                 </div>
                 <div class="holiday-price">$1000</div>
-                <div class="button-custom" onclick="location.href='#';">Add to Cart</div>
+                <button type="submit" class="button-custom" name="item" value="16-inch MacBook Pro 2021">Add to Cart</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h3 class="card-title">Categories</h3>
+    <div class="categories">
+    <!-- Hard coded -->
+        <div class="category" onclick="location.href='#';">
+            <img src="{{ url_for('static', filename='assets/fruits.jpg') }}" class="category-image"/>
+            <div class="category-text">Fruits</div>
+        </div>
+        <div class="category" onclick="location.href='#';">
+            <img src="{{ url_for('static', filename='assets/games.jpg') }}" class="category-image"/>
+            <div class="category-text">Games</div>
+        </div>
+        <div class="category" onclick="location.href='#';">
+            <img src="{{ url_for('static', filename='assets/sports.jpg') }}" class="category-image"/>
+            <div class="category-text">Sports</div>
+        </div>
+        <div class="category" onclick="location.href='#';">
+            <img src="{{ url_for('static', filename='assets/tech.jpg') }}" class="category-image"/>
+            <div class="category-text">Technology</div>
         </div>
     </div>
 </div>

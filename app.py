@@ -5,7 +5,7 @@ from wtforms.widgets.core import Input
 from db import app
 from db import *
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField
 from wtforms.validators import InputRequired, Length, ValidationError, Email, email_validator
 from flask_bcrypt import Bcrypt
 from flask_login import login_manager, login_user, LoginManager, login_required, logout_user, current_user
@@ -51,6 +51,12 @@ class LoginForm(FlaskForm):
 
 cart = []
 
+class MinMaxForm(FlaskForm):
+    min = IntegerField(render_kw={"placeholder": "Min"})
+    max = IntegerField(render_kw={"placeholder": "Max"})
+    search = SubmitField('Search')
+
+
 # This is the home page (aka the products page)
 @app.route("/", methods = ['GET', 'POST'])
 def index():
@@ -72,6 +78,8 @@ def index():
             'stock count':i.stock_count
         }
         listOfAllProductDics.append(temp)
+        session['cart items'] = []
+
 
     # listOfAllProductDics looks like this when outputted
     #[{'name': 'iPhone 13 Pro', 'description': 'The newest iPhone right now!', 'price': 1199.99, 'picture': 'default.jpg', 'brand': 'Apple', 'category': 'Electronics', 'stock count': 5}, 
@@ -118,38 +126,31 @@ def logout():
     return redirect(url_for('login'))
 
 
-
 @app.route("/register", methods=['POST', 'GET'])
 def register():
     form = RegisterForm()
-    if form.validate_on_submit():
-        hash = bcrypt.generate_password_hash(form.password.data)
-        user = User(name=form.name.data, email=form.email.data, username=form.username.data, password=hash)
-        db.session.add(user)
-        db.session.commit()
-        return redirect(url_for('login'))
-
-    # POST request - Handle form data from client
-    # if request.method == "POST":
-    #     print('Register')
-    #     Name = name
-    #     Username = username
-    #     Password = password
-
-    #     newUser = User(name = Name, username = Username, password = Password)
-    #     db.session.add(newUser)
-    # db.session.commit()
+    if request.method == "POST":
+        if form.validate_on_submit():
+            hash = bcrypt.generate_password_hash(form.password.data)
+            user = User(name=form.name.data, email=form.email.data, username=form.username.data, password=hash)
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for('login'))
     
     # Otherwise GET request - Return register page to client
     return render_template('register.html', form=form)
 
 
-@app.route("/search/<product>", methods=['GET'])
+@app.route("/search/<product>", methods=['GET', 'POST'])
 def searchProduct(product):
     param = ''.join(['%', product, '%'])
     results = db.session.execute('SELECT * FROM Product WHERE name LIKE :product_name', {'product_name': param}).fetchall()
     products = []
-    
+    # else:
+    #     param = ''.join(['%', product, '%'])
+    #     results = db.session.execute('SELECT * FROM Product WHERE name LIKE :product_name AND price > :min AND price < :max', {'product_name': param, 'min': min, 'max': max}).fetchall()
+    #     products = []
+            
     for result in results:
         # productInfoDic looks like this when outputted with the example of 'iPhone 13 Pro':
         # {
@@ -158,19 +159,34 @@ def searchProduct(product):
             #  'picture': 'default.jpg',
             #  'stock count': 5,
         # }
+
+        auxReview = db.session.execute('SELECT AVG(rating) FROM review WHERE product_id = :product GROUP BY product_id', {'product': result[0]}).first()
+
+        
+        if auxReview is None:
+            review = 0
+        else:
+            review = int(auxReview[0])
+
+        # print(auxReview)
+
         productInfoDic = {
             'name':result[1],
             'price':result[3],
             'picture':result[4],
-            'stock count':result[-1]
+            'stock count':result[-1],
+            'review': review
         }
         products.append(productInfoDic)
     
-    print(products)
+    # print(product)
+    # print(products[0]['name'])
 
     # Retrieve database information corresponding to the searched product
 
-    return render_template('search_results.html', show_navbar=True, search_phrase=product, search_results=products)
+
+    return render_template('search_results.html', show_navbar=True, products=products, product=product)
+
 
 
 @app.route("/product/<product_name>", methods = ['GET', 'POST'])
@@ -239,9 +255,6 @@ def productInfo(product_name):
         # Order.query.filter_by(newOrder.id).update({'tax': (Order.subtotal*0.1)})
         # DISREGARD -------------------------------------------------------------------------------------------------------------------------------------------------------------------
         cart.append(product_name)
-
-
-    
 
 # Not sure whether to add a username argument for this app route or if username will be a variable you can call throughout the program with the use of Flask Login
 

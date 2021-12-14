@@ -79,7 +79,7 @@ def index():
     # {'name': 'Wilson Basketball 2021', 'description': 'The new NBA basketball!', 'price': 39.99, 'picture': 'default.jpg', 'brand': 'Wilson', 'category': 'Sports', 'stock count': 5}, 
     # {'name': 'Adidas Comfort Slides', 'description': 'Adidas comfort slides for your feet!', 'price': 34.99, 'picture': 'default.jpg', 'brand': 'Adidas', 'category': 'Clothes', 'stock count': 5}, 
     # {'name': 'Cracking the Coding Interview', 'description': 'The best book to prepare for technical interviews!', 'price': 39.99, 'picture': 'default.jpg', 'brand': 'Gayle Laakmann McDowell', 'category': 'Books', 'stock count': 5}]
-    return render_template('home.html', show_navbar=True, signed_in=False)
+    return render_template('home.html', show_navbar=True, signed_in=False, products=listOfAllProductDics)
 
 
 @app.route("/login", methods=['POST', 'GET'])
@@ -256,7 +256,6 @@ def shoppingCart():
 
     for cart_item in cart:
         item = Product.query.filter_by(name = cart_item).first()
-
         cart_items.append(item)
 
     subtotal = 0
@@ -264,7 +263,6 @@ def shoppingCart():
         subtotal += cart_item.price
 
     shipping = 0
-
     total = subtotal + shipping
     #     newProductAddition = OrderDetail(order = o, product = p, count = c)
     #     db.session.add(newProductAddition)
@@ -407,7 +405,22 @@ def checkout():
         # 'Shipping Fee': 5.0,
         # 'Total': 87.47
     # }
-    return render_template("checkout.html", show_navbar=True)
+
+    cart_items = []
+
+    for cart_item in cart:
+        item = Product.query.filter_by(name = cart_item).first()
+        cart_items.append(item)
+
+    subtotal = 0
+    for cart_item in cart_items:
+        subtotal += cart_item.price
+
+    shipping = 0
+    tax = round(0.1 * (subtotal + shipping), 2)
+    total = tax + subtotal + shipping
+
+    return render_template("checkout.html", show_navbar=True, cart_items=cart_items, subtotal=subtotal, tax=tax, total=total)
 
 
 @app.route("/order_confirmation", methods=['GET'])

@@ -44,13 +44,13 @@
             <h1 class="title">Order Summary</h1>
             <div class="order-summary-container">
                 <div class="order-summary-top">
-                    {% for i in range(3) %}
+                    {% for item in cart_items %}
                         <div class="cart-item-container">
                             <div class="cart-item-content">
-                                <h3 class="cart-item-name">iPhone 13 Pro</h3>
+                                <h3 class="cart-item-name">{{ item.name }}</h3>
                                 <div>
                                     <p class="cart-item-quantity">Qty: 1</p>
-                                    <p class="cart-item-price">$10.99</p>
+                                    <p class="cart-item-price">${{ item.price }}</p>
                                 </div>
                             </div>
                         </div>
@@ -59,7 +59,7 @@
                 <div class="order-summary-center">
                     <div class="order-subtotal-container">
                         <p class="order-summary-info-title">Subtotal</p>
-                        <p class="order-summary-info-data">$37.76</p>
+                        <p class="order-summary-info-data">${{ subtotal }}</p>
                     </div>
                     <div class="order-shipping-container">
                         <p class="order-summary-info-title">Shipping</p>
@@ -67,13 +67,13 @@
                     </div>
                     <div class="order-tax-container">
                         <p class="order-summary-info-title">Tax</p>
-                        <p class="order-summary-info-data">$3.21</p>
+                        <p class="order-summary-info-data">${{ tax }}</p>
                     </div>
                 </div>
                 <div class="order-summary-bottom">
                     <div class="order-total-container">
                         <p class="order-summary-info-title">Total</p>
-                        <p class="order-summary-info-data">$40.97</p>
+                        <p class="order-summary-info-data">${{ total }}</p>
                     </div>
                 </div>
             </div>

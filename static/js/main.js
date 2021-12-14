@@ -10,3 +10,22 @@ const handleSearch = (event) => {
         window.location.href = newUrl;
     }
 }
+
+const addToCart = (itemName) => {
+    let method = 'POST';
+    let newUrl = url + '/';
+
+    let item_details = {
+        "name": itemName
+    };
+
+    let xhttp = new XMLHttpRequest();
+    xhttp.open(method, newUrl, true);
+
+    xhttp.send(item_details);
+
+    xhttp.onload = function() {
+
+    };
+    
+}

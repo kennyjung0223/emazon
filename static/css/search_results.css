@@ -123,8 +123,9 @@
     border: 0.0625rem solid #283A46;
     border-radius: 0.3125rem;
     width: 22vw;
-    height: 50vh;
+    /* height: 50vh; */
     text-align: center;
+    padding-bottom: 16px;
 }
 
 .product-image{

@@ -13,6 +13,8 @@ import stripe
 
 from datetime import datetime
 
+user_is_logged_in = False
+
 
 # app = Flask(__name__)
 app.config['SECRET_KEY'] = 'testkey'
@@ -61,8 +63,15 @@ class MinMaxForm(FlaskForm):
 @app.route("/", methods = ['GET', 'POST'])
 def index():
     if request.method == 'POST': 
-        item = request.form.get('item')
-        cart.append(item)
+        if request.form.get('item') is None:
+            content_type = request.headers.get('Content-Type')
+            if content_type == 'application/json':
+                data = request.json
+                print('json is ', data)
+                # cart.append(item)
+        else:
+            item = request.form.get('item')
+            cart.append(item)
 
 
     allProducts = Product.query.all()
@@ -87,7 +96,7 @@ def index():
     # {'name': 'Wilson Basketball 2021', 'description': 'The new NBA basketball!', 'price': 39.99, 'picture': 'default.jpg', 'brand': 'Wilson', 'category': 'Sports', 'stock count': 5}, 
     # {'name': 'Adidas Comfort Slides', 'description': 'Adidas comfort slides for your feet!', 'price': 34.99, 'picture': 'default.jpg', 'brand': 'Adidas', 'category': 'Clothes', 'stock count': 5}, 
     # {'name': 'Cracking the Coding Interview', 'description': 'The best book to prepare for technical interviews!', 'price': 39.99, 'picture': 'default.jpg', 'brand': 'Gayle Laakmann McDowell', 'category': 'Books', 'stock count': 5}]
-    return render_template('home.html', show_navbar=True, signed_in=False, products=listOfAllProductDics)
+    return render_template('home.html', show_navbar=True, signed_in=False, products=listOfAllProductDics, user_is_logged_in=user_is_logged_in)
 
 
 @app.route("/login", methods=['POST', 'GET'])
@@ -98,6 +107,7 @@ def login():
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
                 session['user'] = user.name
+                user_is_logged_in = True
                 login_user(user)
                 return redirect(url_for('index'))
 
@@ -122,6 +132,8 @@ def login():
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
 def logout():
+    cart = []
+    user_is_logged_in = False 
     logout_user()
     return redirect(url_for('login'))
 
@@ -185,13 +197,13 @@ def searchProduct(product):
     # Retrieve database information corresponding to the searched product
 
 
-    return render_template('search_results.html', show_navbar=True, products=products, product=product)
+    return render_template('search_results.html', show_navbar=True, products=products, product=product, user_is_logged_in=user_is_logged_in)
 
 
 
 @app.route("/product/<product_name>", methods = ['GET', 'POST'])
 def productInfo(product_name):
-    user = User.query.filter_by(username = Username).first()
+    # user = User.query.filter_by(username = Username).first()
     if request.method == 'GET':
         productName = product_name
         product = Product.query.filter_by(name = productName).first()
@@ -234,7 +246,7 @@ def productInfo(product_name):
             #  'stock count': 5,
             #  'Reviews': [{'Review': 'This phone is absolutely amazing!', 'Rating': 5}, {'Review': 'This phone sucks!', 'Rating': 1}]
         # }
-        return render_template('product_details.html', show_navbar=True, product_info=productInfoDic)
+        return render_template('product_details.html', show_navbar=True, product_info=productInfoDic, user_is_logged_in=user_is_logged_in)
     else:
         print("do something")
         # DISREGARD ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -293,6 +305,8 @@ def shoppingCart():
             print(item_to_remove)
             # remove product from cart_items
             cart.remove(item_to_remove)
+        elif action[0] == 'add':
+            pass
     # GET request - return cart page to the client
     # lebronUsername = 'ljames'
     
@@ -348,7 +362,7 @@ def shoppingCart():
 
     # Using session list ----------------------------------------------------------------------------------------------------------------------------------------------
 
-    return render_template("cart.html", show_navbar=True, cart_items=cart_items, subtotal=subtotal, total=total)
+    return render_template("cart.html", show_navbar=True, cart_items=cart_items, subtotal=subtotal, total=total, user_is_logged_in=user_is_logged_in)
 
 
 @app.route("/checkout", methods=['POST', 'GET'])
@@ -375,6 +389,8 @@ def checkout():
             'exp_year': int(card_exp_date[3:5]),
             'cvc': str(card_cvc)
         }
+
+        amount = 100
         
         try:
             token = generate_card_token(card_data)
@@ -383,6 +399,7 @@ def checkout():
             if paid:
                 # render template for order confirmation
                 print("render template for order confirmation")
+                return render_template('order_confirmation.html', show_navbar=True)
             else:
                 # payment was for some reason unsuccessful
                 print("payment was for some reason unsuccessful")
@@ -433,7 +450,7 @@ def checkout():
     tax = round(0.1 * (subtotal + shipping), 2)
     total = tax + subtotal + shipping
 
-    return render_template("checkout.html", show_navbar=True, cart_items=cart_items, subtotal=subtotal, tax=tax, total=total)
+    return render_template("checkout.html", show_navbar=True, cart_items=cart_items, subtotal=subtotal, tax=tax, total=total, user_is_logged_in=user_is_logged_in)
 
 
 @app.route("/order_confirmation", methods=['GET'])

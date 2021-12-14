@@ -20,9 +20,9 @@
                         </div>
                         <div class="reviews-display-right">
                             {% if product_info.reviews | length == 1 %}
-                                <p>{{ product_info.reviews | length }} review</p>
+                                <p>{{ product_info.Reviews | length }} review</p>
                             {% else %}
-                                <p>{{ product_info.reviews | length }} reviews</p>
+                                <p>{{ product_info.Reviews | length }} reviews</p>
                             {% endif %}
                         </div>
                     </div>
@@ -31,7 +31,7 @@
                     <p class="product-description">{{ product_info.description }}</p>
                     <h2 class="product-price">${{ product_info.price }}</h2>
                 </div>
-                <div class="product-details-right-bottom">
+                <form class="product-details-right-bottom">
                     <div class="quantity-container">
                         <div class="quantity-container-left">
                             <p>Qty:</p>
@@ -48,15 +48,15 @@
                             </div>
                         </div>
                     </div>
-                    <button class="add-to-cart-button">Add to cart</button>
-                </div>
+                    <button onclick="addToCart('{{ product_info.name }}')" class="add-to-cart-button">Add to cart</button>
+                </form>
             </div>
         </div>
         <div class="customer-reviews-container">
             <div class="customer-reviews-content">
-                <h1 class="title">Customer reviews ({{ product_info.reviews | length }})</h1>
+                <h1 class="title">Customer reviews ({{ product_info.Reviews | length }})</h1>
                 <div class="customer-reviews">
-                    {% for review in product_info.reviews %}
+                    {% for review in product_info.Reviews %}
                         <div class="review-container">
                             <h3 class="reviewer-name">John Smith</h3>
                             <div class="reviews-display">

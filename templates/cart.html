@@ -22,22 +22,26 @@
                                 <div class="cart-item-content-center">
                                     <h3 class="cart-item-name">{{ item.name }}</h3>
                                     <div class="cart-item-content-center-bottom" method="post">
-                                        <div class="quantity-container">
+                                        <!-- <div class="quantity-container">
                                             <div class="quantity-container-left">
                                                 <p>Qty:</p>
                                             </div>
                                             <div class="quantity-container-right">
                                                 <div class="quantity-button-container">
-                                                    <button class="add-button">
-                                                        <i class="fas fa-plus"></i>
-                                                    </button>
+                                                    <form method="post">
+                                                        <button type="submit" class="add-button" name="action" value="add {{ item.name }}">
+                                                            <i class="fas fa-plus"></i>
+                                                        </button>
+                                                    </form>
                                                     <p class="quantity">1</p>
-                                                    <button class="minus-button">
-                                                        <i class="fas fa-minus"></i>
-                                                    </button>
+                                                    <form method="post">
+                                                        <button type="submit" class="minus-button" name="action" value="remove {{ item.name }}">
+                                                            <i class="fas fa-minus"></i>
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                         <form method="post">
                                             <button type="submit" class="remove-item-button" name="action" value="remove {{ item.name }}">Remove</button>
                                         </form>

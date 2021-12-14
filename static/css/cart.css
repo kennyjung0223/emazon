@@ -125,6 +125,8 @@
 }
 
 .remove-item-button {
+    height: 48px;
+    /* height: 100%; */
     padding: 0 16px;
     font-family: 'Inter', Arial, Helvetica, sans-serif;
     font-size: 16px;
@@ -183,6 +185,9 @@
     border: none;
     border-radius: 8px;
     background-color: #08D99A;
+    color: #18232C;
+    text-decoration: none;
+    text-align: center;
 }
 
 .checkout-button:hover {

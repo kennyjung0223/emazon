@@ -10,7 +10,7 @@ from wtforms.validators import InputRequired, Length, ValidationError, Email, em
 from flask_bcrypt import Bcrypt
 from flask_login import login_manager, login_user, LoginManager, login_required, logout_user, current_user
 import stripe
-import time
+# import time
 
 from datetime import datetime
 
@@ -299,7 +299,7 @@ def shoppingCart():
     # Order.query.filter_by(newOrder.id).update({'subtotal': (Order.subtotal + p.price)})
     # Order.query.filter_by(newOrder.id).update({'tax': (Order.subtotal*0.1)})
 
-    time.sleep(2)
+    # time.sleep(2)
     
     # POST request - Handle change in quantity removing an item from the cart
     if request.method == "POST":

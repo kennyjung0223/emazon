@@ -481,4 +481,4 @@ def create_payment_charge(token, amount):
     return payment_check
 
 if __name__ == "__main__":
-    app.run(port=port)
+    app.run(host='0.0.0.0', port=port)

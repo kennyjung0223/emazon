@@ -8,6 +8,7 @@ body {
     background-color: #18232C !important;
     color: #F8F8F8 !important;
     font-family: 'Inter', Arial, Helvetica, sans-serif !important;
+    line-height: 24px;
 }
 
 h1, h3, h5{

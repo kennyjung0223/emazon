@@ -32,52 +32,84 @@ print("------------------- ORDER DETAILS -------------------")
 for order_detail in order_details:
     print(order_detail.id, order_detail.order_id, order_detail.product.name, order_detail.count)
 
-# productName = 'iPhone 13 Pro'
-# product = Product.query.filter_by(name = productName).first()
-# print(product)
+print("\nSearching for one product (example: iPhone 13 Pro)-------------------------------------------")
+
+productName = 'iPhone 13 Pro'
+product = Product.query.filter_by(name = productName).first()
+print(product)
 # print(product.id, product.name, product.description, product.price, product.picture, product.brand, product.category, product.stock_count)
-# productInfoDic = {
-# 	'name':product.name,
-# 	'description':product.description,
-# 	'price':product.price,
-# 	'picture':product.picture,
-# 	'brand':product.brand,
-# 	'category':product.category,
-# 	'stock count':product.stock_count
-# }
-# print(productInfoDic)
-# productInfoDicJson = json.dumps(productInfoDic)
-# print(productInfoDicJson)
 
-# print("-------------------------------------------------------------\n\n\n")
+productInfoDic = {
+	'name':product.name,
+	'description':product.description,
+	'price':product.price,
+	'picture':product.picture,
+	'brand':product.brand,
+	'category':product.category,
+	'stock count':product.stock_count
+}
+print(productInfoDic)
+productInfoDicJson = json.dumps(productInfoDic)
+print(productInfoDicJson)
+print()
+print("Product Name: " + productInfoDic['name'])
+print("Description: " + productInfoDic['description'])
+print("Price: " + str(productInfoDic['price']))
+print("Image: " + productInfoDic['picture'])
+print("Sold by: " + productInfoDic['brand'])
+print("Category: " + productInfoDic['category'])
+print("Available units: " + str(productInfoDic['stock count']))
+productReview = Review.query.filter_by(product_id = product.id).all()
+listOfReviewsForProduct = []
+print(productReview)
+for eachReview in productReview:
+	temp = {
+		'Review':eachReview.description,
+		'Rating':eachReview.rating
+	}
+	listOfReviewsForProduct.append(temp)
+print(listOfReviewsForProduct)
+productInfoDic['Reviews'] = listOfReviewsForProduct
+print("Reviews for "+ productInfoDic['name'] +": ")
+for eachReview in productInfoDic['Reviews']:
+	print("\tReview: " + eachReview['Review'])
+	print("\tRating: " + str(eachReview['Rating']))
+	print()
+print(productInfoDic)
+print(json.dumps(productInfoDic))
 
-# allProducts = Product.query.all()
-# listOfAllProductDics = []
-# for i in allProducts:
-# 	print(i.id, i.name, i.description, i.price, i.picture, i.brand, i.category, i.stock_count)
-# 	temp = {
-# 		'name':i.name,
-# 		'description':i.description,
-# 		'price':i.price,
-# 		'picture':i.picture,
-# 		'brand':i.brand,
-# 		'category':i.category,
-# 		'stock count':i.stock_count
-# 	}
-# 	listOfAllProductDics.append(temp)
+print("-------------------------------------------------------------\n\n\n")
 
-# listOfAllProductDicsJson = []
-# for i in range(len(allProducts)):
-# 	print(listOfAllProductDics[i])
-# 	listOfAllProductDicsJson.append(json.dumps(listOfAllProductDics[i]))
+allProducts = Product.query.all()
+listOfAllProductDics = []
+for i in allProducts:
+	print(i.id, i.name, i.description, i.price, i.picture, i.brand, i.category, i.stock_count)
+	temp = {
+		'name':i.name,
+		'description':i.description,
+		'price':i.price,
+		'picture':i.picture,
+		'brand':i.brand,
+		'category':i.category,
+		'stock count':i.stock_count
+	}
+	listOfAllProductDics.append(temp)
 
-# print("\n\nJSON versions")
+listOfAllProductDicsJson = []
+for i in range(len(allProducts)):
+	print(listOfAllProductDics[i])
+	listOfAllProductDicsJson.append(json.dumps(listOfAllProductDics[i]))
 
-# for i in range(len(allProducts)):
-# 	print(listOfAllProductDicsJson[i])
+print("\n\nJSON versions")
+
+for i in range(len(allProducts)):
+	print(listOfAllProductDicsJson[i])
+
+print(listOfAllProductDics)
 
 lebronUsername = 'ljames'
 lebron = User.query.filter_by(username = lebronUsername).first()
+print()
 print("Name: " + lebron.name)
 print("ID: " + str(lebron.id))
 
@@ -87,5 +119,36 @@ print(orderForLebron)
 
 orderDetailsForLebron = OrderDetail.query.filter_by(order_id = orderForLebron.id).all()
 print(orderDetailsForLebron)
-for orderProducts in orderDetailsForLebron:
-	print("Product: " + orderProducts.product.name + " Count: " + str(order_detail.count))
+
+orderProductsForLebronList = []
+for orderProduct in orderDetailsForLebron:
+	print("Product: " + orderProduct.product.name + " Count: " + str(orderProduct.count))
+	orderProductsForLebronList.append({"Product":orderProduct.product.name, "Count":orderProduct.count, "Price":orderProduct.product.price, "Image":orderProduct.product.picture})
+
+orderForLebronDic = {}
+orderForLebronDic['Name'] = lebron.name
+orderForLebronDic['Products'] = orderProductsForLebronList
+orderForLebronDic['Subtotal'] = orderForLebron.subtotal
+orderForLebronDic['Tax'] = orderForLebron.tax
+orderForLebronDic['Shipping Fee'] = orderForLebron.shipping_fee
+print("\n\n")
+print(orderForLebronDic)
+print()
+print("Name: " + orderForLebronDic['Name'])
+print("Products: ")
+for eachProduct in orderForLebronDic['Products']:
+	print("\t"+eachProduct['Product'])
+	print("\tCount: "+ str(eachProduct['Count']))
+	print("\tPrice: "+ str(eachProduct['Price']))
+	print("\tImage: "+ str(eachProduct['Image']))
+	print()
+print("Subtotal: "+ str(orderForLebronDic['Subtotal']))
+print("For adding to checkout-------------------------------------")
+print("Tax: "+ str(orderForLebronDic['Tax']))
+print("Shipping Fee: "+ str(orderForLebronDic['Shipping Fee']))
+
+print("Total: " + str(orderForLebronDic['Subtotal'] + orderForLebronDic['Tax'] + orderForLebronDic['Shipping Fee']))
+print("Address: \n\t"+ orderForLebron.address.street + "\n\t" + orderForLebron.address.city + " " + orderForLebron.address.postal_code)
+print("payment information")
+print(json.dumps(orderForLebronDic))
+

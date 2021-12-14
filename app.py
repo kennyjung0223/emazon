@@ -1,5 +1,6 @@
 from os import linesep
 from flask import Flask, render_template, request, url_for, redirect
+from flask_cors import CORS
 from wtforms.widgets.core import Input
 from db import app
 from db import *
@@ -15,6 +16,7 @@ import stripe
 app.config['SECRET_KEY'] = 'testkey'
 stripe.api_key = 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'
 bcrypt = Bcrypt(app) 
+CORS(app)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -158,7 +160,7 @@ def searchProduct(product):
 
     # Retrieve database information corresponding to the searched product
 
-    return render_template('search_results.html', show_navbar=True)
+    return render_template('search_results.html', show_navbar=True, search_phrase=product, search_results=products)
 
 
 @app.route("/product/<product_name>", methods=['GET'])

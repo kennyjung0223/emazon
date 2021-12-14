@@ -25,6 +25,7 @@ products = [
     ("Wilson Basketball 2021", "The new NBA basketball!", 39.99, "default.jpg", "Wilson", "Sports", 5),
     ("Adidas Comfort Slides", "Adidas comfort slides for your feet!", 34.99, "default.jpg", "Adidas", "Clothes", 5),
     ("Cracking the Coding Interview", "The best book to prepare for technical interviews!", 39.99, "default.jpg", "Gayle Laakmann McDowell", "Books", 5),
+    ("iPhone 13 Pro Max", "The best iPhone right now!", 1399.99, "default.jpg", "Apple", "Electronics", 5),
 ]
 
 for product in products:

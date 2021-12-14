@@ -22,10 +22,10 @@ const addToCart = (itemName) => {
     let xhttp = new XMLHttpRequest();
     xhttp.open(method, newUrl, true);
 
-    xhttp.send(item_details);
+    // xhttp.send(item_details);
 
     xhttp.onload = function() {
-
+        xhttp.send(item_details);
     };
     
 }

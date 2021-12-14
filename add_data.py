@@ -74,7 +74,16 @@ products = [
         "Apple",
         "Electronics",
         15
-    )
+    ),
+    (
+        "iPhone 13 Pro Max", 
+        "The newest iPhone right now! 6.7-inch Super Retina XDR display with ProMotion for a faster, more responsive feel.", 
+        1599.99, 
+        "https://m.media-amazon.com/images/I/61i8Vjb17SL._FMwebp__.jpg", 
+        "Apple", 
+        "Electronics", 
+        5
+    ),
 ]
 
 for product in products:

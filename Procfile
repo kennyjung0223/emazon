@@ -1,1 +1,1 @@
-web: gunicorn -b :5000 emazon-final-project:app
+web: gunicorn -b :5000 emazon:app

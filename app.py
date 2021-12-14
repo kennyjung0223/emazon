@@ -34,7 +34,14 @@ def index():
 def login():
     # POST request - Handle form data from client
     if request.method == "POST":
-        print('Login')
+        print("Post executed")
+        # Username = username
+        # Password = password
+        # user = User.query.filter_by(username=Username).first()
+
+        # if user is None or not user.check_password(password):
+        #     return render_template("login.html")
+        # return redirect(url_for('index'))
 
     # Otherwise, GET request - Return login page to client
     return render_template('login.html')
@@ -43,8 +50,15 @@ def login():
 @app.route("/register", methods = ['POST', 'GET'])
 def register():
     # POST request - Handle form data from client
-    if request.method == "POST":
-        print('Register')
+    # if request.method == "POST":
+    #     print('Register')
+    #     Name = name
+    #     Username = username
+    #     Password = password
+
+    #     newUser = User(name = Name, username = Username, password = Password)
+    #     db.session.add(newUser)
+    # db.session.commit()
     
     # Otherwise GET request - Return register page to client
     return render_template('register.html')

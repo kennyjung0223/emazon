@@ -1,1 +1,1 @@
-web: gunicorn emazon:app
+web: gunicorn emazon-final-project:app

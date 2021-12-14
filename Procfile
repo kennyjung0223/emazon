@@ -1,1 +1,1 @@
-web: gunicorn -b :5000 emazon:app
+web: gunicorn -b :5000 app:app

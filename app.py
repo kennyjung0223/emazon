@@ -10,6 +10,7 @@ from wtforms.validators import InputRequired, Length, ValidationError, Email, em
 from flask_bcrypt import Bcrypt
 from flask_login import login_manager, login_user, LoginManager, login_required, logout_user, current_user
 import stripe
+import os
 
 from datetime import datetime
 
@@ -17,6 +18,7 @@ user_is_logged_in = False
 
 
 # app = Flask(__name__)
+port = int(os.environ.get('PORT', 5000))
 app.config['SECRET_KEY'] = 'testkey'
 stripe.api_key = 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'
 bcrypt = Bcrypt(app) 
@@ -479,4 +481,4 @@ def create_payment_charge(token, amount):
     return payment_check
 
 if __name__ == "__main__":
-    app.run()
+    app.run(port=port)

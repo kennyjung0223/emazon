@@ -1,1 +1,1 @@
-web: gunicorn emazon-final-project:app
+web: gunicorn -b :$PORT emazon-final-project:app

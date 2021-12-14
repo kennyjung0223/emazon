@@ -67,7 +67,7 @@
                                     {% for i in range(review.Rating) %}
                                         <i class="fas fa-star colored-star"></i>
                                     {% endfor %}
-                                    {% for i in range(5 - product_info.avg_rating)  %}
+                                    {% for i in range(5 - review.Rating) %}
                                     <i class="fas fa-star"></i>
                                     {% endfor %}
                                 </div>

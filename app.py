@@ -4,10 +4,11 @@ from db import *
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
 from wtforms.validators import DataRequired, Email, Length, EqualTo
+import stripe
 
 # app = Flask(__name__)
 app.config['SECRET_KEY'] = 'testkey'
-
+stripe.api_key = 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'
 
 class LoginForm(FlaskForm):
     email = StringField(validators=[DataRequired(), Length(min=3, max=15)])
@@ -206,6 +207,20 @@ def checkout():
             'cvc': str(card_cvc)
         }
         
+        try:
+            token = generate_card_token(card_data)
+            paid = create_payment_charge(token, amount)
+            
+            if paid:
+                # render template for order confirmation
+                print("render template for order confirmation")
+            else:
+                # payment was for some reason unsuccessful
+                print("payment was for some reason unsuccessful")
+        except stripe.error.CardError as e:
+            # issue with processing the card inputs (i.e. invalid card number, invalid exp_month/exp_year, invalid cvc)
+            print(f"ERROR: {e.user_message}")
+        
     # GET request - return checkout page to client
 
     # user = User.query.filter_by(username = Username).first()
@@ -243,6 +258,24 @@ def orderConfirmation():
 
     return render_template("order_confirmation.html", show_navbar=True)
 
+
+def generate_card_token(card_data):
+    data = stripe.Token.create(card=card_data)
+    card_token = data['id']
+
+    return card_token
+
+def create_payment_charge(token, amount):
+    payment = stripe.Charge.create(
+                amount=int(amount * 100),
+                currency='usd',
+                source=token,
+                description='Test charge'
+            )
+
+    payment_check = payment['paid']
+
+    return payment_check
 
 if __name__ == "__main__":
     app.run()

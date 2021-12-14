@@ -1,4 +1,5 @@
 from db import db, User, Order, Product, OrderDetail, Review, Address
+# from app import stripe, generate_card_token, create_payment_charge
 import json
 
 users = User.query.all()
@@ -168,3 +169,27 @@ print("Address: \n\t"+ orderForLebron.address.street + "\n\t" + orderForLebron.a
 print("payment information")
 print(json.dumps(orderForLebronDic))
 
+# print("TESTING STRIPE PAYMENT PROCESSING")
+# card_number = "4242424242424242"
+# exp_month = 12
+# exp_year = 2021
+# cvc = 314
+# amount = 299.99
+
+# card_data = {
+# 	"number": str(card_number),
+# 	"exp_month": int(exp_month),
+# 	"exp_year": int(exp_year),
+# 	"cvc": str(cvc)
+# }
+
+# try:
+# 	token = generate_card_token(card_data)
+# 	paid = create_payment_charge(token, amount)
+
+# 	if paid:
+# 		print("Payment was successful")
+# 	else:
+# 		print("Payment was unsuccessful")
+# except stripe.error.CardError as e:
+# 	print(f"ERROR: {e.user_message} ")

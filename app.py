@@ -1,5 +1,5 @@
+from flask import Flask, render_template, request, url_for, redirect, session
 from os import linesep
-from flask import Flask, render_template, request, url_for, redirect
 from wtforms.widgets.core import Input
 from db import app
 from db import *
@@ -44,6 +44,8 @@ class LoginForm(FlaskForm):
     password = PasswordField(validators=[InputRequired(), Length(min=8, max=80)], render_kw={"placeholder": "Password"})
     submit = SubmitField('Sign in')
     # rememberMe = BooleanField('Remember Me')
+
+session['cart items'] = []
 
 # This is the home page (aka the products page)
 @app.route("/")
@@ -161,78 +163,154 @@ def searchProduct(product):
     return render_template('search_results.html', show_navbar=True)
 
 
-@app.route("/product/<product_name>", methods=['GET'])
+@app.route("/product/<product_name>", methods = ['GET', 'POST'])
 def productInfo(product_name):
-    productName = product_name
-    product = Product.query.filter_by(name = productName).first()
-    productInfoDic = {
-        'name':product.name,
-        'description':product.description,
-        'price':product.price,
-        'picture':product.picture,
-        'brand':product.brand,
-        'category':product.category,
-        'stock count':product.stock_count
-    }
-    productReview = Review.query.filter_by(product_id = product.id).all()
-    listOfReviewsForProduct = []
-    print(productReview)
-
-    sum = 0
-
-    for eachReview in productReview:
-        temp = {
-            'Review':eachReview.description,
-            'Rating':eachReview.rating
+    user = User.query.filter_by(username = Username).first()
+    if request.method == 'GET':
+        productName = product_name
+        product = Product.query.filter_by(name = productName).first()
+        productInfoDic = {
+            'name':product.name,
+            'description':product.description,
+            'price':product.price,
+            'picture':product.picture,
+            'brand':product.brand,
+            'category':product.category,
+            'stock count':product.stock_count
         }
-        sum += eachReview.rating
-        listOfReviewsForProduct.append(temp)
+        productReview = Review.query.filter_by(product_id = product.id).all()
+        listOfReviewsForProduct = []
+        print(productReview)
 
-    avg_rating = int(sum / len(productReview))
+        sum = 0
 
-    productInfoDic['reviews'] = listOfReviewsForProduct
-    productInfoDic['avg_rating'] = avg_rating
-    # productInfoDic looks like this when outputted with the example of 'iPhone 13 Pro':
-    # {
-        #  'name': 'iPhone 13 Pro', 
-        #  'description': 'The newest iPhone right now!',
-        #  'price': 1199.99,
-        #  'picture': 'default.jpg',
-        #  'brand': 'Apple', 
-        #  'category': 'Electronics',
-        #  'stock count': 5,
-        #  'Reviews': [{'Review': 'This phone is absolutely amazing!', 'Rating': 5}, {'Review': 'This phone sucks!', 'Rating': 1}]
-    # }
-    return render_template('product_details.html', show_navbar=True, product_info=productInfoDic)
+        for eachReview in productReview:
+            temp = {
+                'Review':eachReview.description,
+                # 'User':user.name,
+                'Rating':eachReview.rating
+            }
+            sum += eachReview.rating
+            listOfReviewsForProduct.append(temp)
+        
+        avg_rating = int(sum / len(productReview))
 
-  
-# Not sure whether to add a username argument for this app route or if username will be a variable you can call throughout the program with the use of Flask Logun
+        productInfoDic['Reviews'] = listOfReviewsForProduct
+        productInfoDic['avg_rating'] = avg_rating
+        # productInfoDic looks like this when outputted with the example of 'iPhone 13 Pro':
+        # {
+            #  'name': 'iPhone 13 Pro', 
+            #  'description': 'The newest iPhone right now!',
+            #  'price': 1199.99,
+            #  'picture': 'default.jpg',
+            #  'brand': 'Apple', 
+            #  'category': 'Electronics',
+            #  'stock count': 5,
+            #  'Reviews': [{'Review': 'This phone is absolutely amazing!', 'Rating': 5}, {'Review': 'This phone sucks!', 'Rating': 1}]
+        # }
+        return render_template('product_details.html', show_navbar=True, product_info=productInfoDic)
+    else:
+        print("do something")
+        # DISREGARD ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        # This is the hypothetical POST method to add to cart
+        # Date is something I assume can be pulled from the front end directly, and shipping fee as well as address is something that can be calculated/added in the 'checkout' app route
+        # Adding something to cart
+        # user = User.query.filter_by(username = Username).first()
+        # productName = product_name
+        # p = Product.query.filter_by(name = productName).first()
+        # newOrder = Order(user_id = user.id, address_id = 0, date = '', subtotal = 0, tax = 0, shipping_fee = 0)
+        # o = Order.query.filter_by(id=newOrder.id).first()
+        # c = quantityOfProduct
+        # newProductAddition = OrderDetail(order = o, product = p, count = c)
+        # db.session.add(newOrder)
+        # db.session.add(newProductAddition)
+        # db.session.commit()
+        # Order.query.filter_by(newOrder.id).update({'subtotal': (Order.subtotal + p.price)})
+        # Order.query.filter_by(newOrder.id).update({'tax': (Order.subtotal*0.1)})
+        # DISREGARD -------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        session['cart items'].append(product_name)
+
+
+    
+
+# Not sure whether to add a username argument for this app route or if username will be a variable you can call throughout the program with the use of Flask Login
+
 @app.route("/cart", methods = ['POST', 'GET'])
 def shoppingCart():
+    # user = User.query.filter_by(username = Username).first()
+    # newOrder = Order(user_id = user.id, address_id = 0, date = '', subtotal = 0, tax = 0, shipping_fee = 0)
+    # db.session.add(newOrder)
+    # o = Order.query.filter_by(id=newOrder.id).first()
+    # c = 1
+    # for i in session['cart items']:
+    #     p = Product.query.filter_by(name = i).first()
+    #     newProductAddition = OrderDetail(order = o, product = p, count = c)
+    #     db.session.add(newProductAddition)
+    # db.session.commit()
+    # Order.query.filter_by(newOrder.id).update({'subtotal': (Order.subtotal + p.price)})
+    # Order.query.filter_by(newOrder.id).update({'tax': (Order.subtotal*0.1)})
+
+    
     # POST request - Handle change in quantity removing an item from the cart
     if request.method == "POST":
         print('Change in quantity or removing an item from the cart')
+        if request.json.get('action') == 'remove':
+            # remove product from cart_items
+            session['cart_items'].remove(product_name)
     # GET request - return cart page to the client
     # lebronUsername = 'ljames'
-    user = User.query.filter_by(username = Username).first()
-    orderForUser = Order.query.filter_by(user_id = user.id).first()
+    
 
-    orderDetailsForUser = OrderDetail.query.filter_by(order_id = orderForUser.id).all()
+    # user = User.query.filter_by(username = Username).first()
+    # orderForUser = Order.query.filter_by(user_id = user.id).first()
 
-    orderProductsForUserList = []
-    for orderProduct in orderDetailsForUser:
-        orderProductsForUserList.append({"Product":orderProduct.product.name, "Count":orderProduct.count, "Price":orderProduct.product.price, "Image":orderProduct.product.picture})
+    # orderDetailsForUser = OrderDetail.query.filter_by(order_id = orderForUser.id).all()
 
-    orderForUserDic = {}
-    orderForUserDic['Name'] = user.name
-    orderForUserDic['Products'] = orderProductsForUserList
-    orderForUserDic['Subtotal'] = orderForUser.subtotal
+    # orderProductsForUserList = []
+    # for orderProduct in orderDetailsForUser:
+    #     orderProductsForUserList.append({"Product":orderProduct.product.name, "Count":orderProduct.count, "Price":orderProduct.product.price, "Image":orderProduct.product.picture})
+
+    # orderForUserDic = {}
+    # orderForUserDic['Name'] = user.name
+    # orderForUserDic['Products'] = orderProductsForUserList
+    # orderForUserDic['Subtotal'] = orderForUser.subtotal
+    
     # orderForUserDic looks like this when outputted with 'ljames' username as an example
     # {
         # 'Name': 'Lebron James', 
         # 'Products': [{'Product': 'Wilson Basketball 2021', 'Count': 1, 'Price': 39.99, 'Image': 'default.jpg'}, {'Product': 'Adidas Comfort Slides', 'Count': 1, 'Price': 34.99, 'Image': 'default.jpg'}], 
         # 'Subtotal': 74.98
     # }
+
+
+    # Using session list ----------------------------------------------------------------------------------------------------------------------------------------------
+    subtotal = 0
+    user = User.query.filter_by(username = Username).first()
+    orderProductsForUserList = []
+    for orderProduct in session['cart items']:
+        p = Product.query.filter_by(name = orderProduct).first()
+        orderProductsForUserList.append({"Product":p.product.name, "Count":p.count, "Price":p.product.price, "Image":p.product.picture})
+        subtotal += p.product.price
+
+    orderForUserDic = {}
+    orderForUserDic['Name'] = user.name
+    orderForUserDic['Products'] = orderProductsForUserList
+    orderForUserDic['Subtotal'] = subtotal
+
+    # Adding to the database for data storing purposes
+
+    newOrder = Order(user_id = user.id, address_id = 0, date = '', subtotal = subtotal, tax = subtotal*0.1, shipping_fee = shippingFee)
+    db.session.add(newOrder)
+    o = Order.query.filter_by(id=newOrder.id).first()
+    c = 1
+    for i in session['cart items']:
+        p = Product.query.filter_by(name = i).first()
+        newProductAddition = OrderDetail(order = o, product = p, count = c)
+        db.session.add(newProductAddition)
+    db.session.commit()
+
+    # Using session list ----------------------------------------------------------------------------------------------------------------------------------------------
+
     return render_template("cart.html", show_navbar=True)
 
 

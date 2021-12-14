@@ -18,7 +18,7 @@ for product in products:
  
 print("------------------- REVIEWS -------------------")
 for review in reviews:
-	print(review.id, review.product_id, review.product.name, review.description, review.rating)
+	print(review.id, review.product_id, review.product.name, review.user_id, review.user.name, review.description, review.rating)
  
 print("------------------- ADDRESSES -------------------")
 for address in addresses:

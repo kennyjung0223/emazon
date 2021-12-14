@@ -1,6 +1,4 @@
-from os import linesep
 from flask import Flask, render_template, request, url_for, redirect, session
-from wtforms.widgets.core import Input
 from db import app
 from db import *
 

@@ -86,21 +86,27 @@ def register():
 
 @app.route("/search/<product>", methods=['GET'])
 def searchProduct(product):
-    productName = product
-    product = Product.query.filter_by(name = productName).first()
-    productInfoDic = {
-        'name':product.name,
-        'price':product.price,
-        'picture':product.picture,
-        'stock count':product.stock_count
-    }
-    # productInfoDic looks like this when outputted with the example of 'iPhone 13 Pro':
-    # {
-        #  'name': 'iPhone 13 Pro', 
-        #  'price': 1199.99,
-        #  'picture': 'default.jpg',
-        #  'stock count': 5,
-    # }
+    param = ''.join(['%', product, '%'])
+    results = db.session.execute('SELECT * FROM Product WHERE name LIKE :product_name', {'product_name': param}).fetchall()
+    products = []
+    
+    for result in results:
+        # productInfoDic looks like this when outputted with the example of 'iPhone 13 Pro':
+        # {
+            #  'name': 'iPhone 13 Pro', 
+            #  'price': 1199.99,
+            #  'picture': 'default.jpg',
+            #  'stock count': 5,
+        # }
+        productInfoDic = {
+            'name':result[1],
+            'price':result[3],
+            'picture':result[4],
+            'stock count':result[-1]
+        }
+        products.append(productInfoDic)
+    
+    print(products)
 
     # Retrieve database information corresponding to the searched product
 

@@ -13,7 +13,7 @@ import stripe
 
 from datetime import datetime
 
-user_is_logged_in = False
+user_is_logged_in = [False]
 
 # session['cart items'] = []
 
@@ -97,7 +97,7 @@ def index():
     # {'name': 'Wilson Basketball 2021', 'description': 'The new NBA basketball!', 'price': 39.99, 'picture': 'default.jpg', 'brand': 'Wilson', 'category': 'Sports', 'stock count': 5}, 
     # {'name': 'Adidas Comfort Slides', 'description': 'Adidas comfort slides for your feet!', 'price': 34.99, 'picture': 'default.jpg', 'brand': 'Adidas', 'category': 'Clothes', 'stock count': 5}, 
     # {'name': 'Cracking the Coding Interview', 'description': 'The best book to prepare for technical interviews!', 'price': 39.99, 'picture': 'default.jpg', 'brand': 'Gayle Laakmann McDowell', 'category': 'Books', 'stock count': 5}]
-    return render_template('home.html', show_navbar=True, signed_in=False, products=listOfAllProductDics, user_is_logged_in=user_is_logged_in)
+    return render_template('home.html', show_navbar=True, signed_in=False, products=listOfAllProductDics, user_is_logged_in=user_is_logged_in[len(user_is_logged_in)-1])
 
 
 @app.route("/login", methods=['POST', 'GET'])
@@ -108,8 +108,9 @@ def login():
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
                 session['user'] = user.name
-                user_is_logged_in = True
+                user_is_logged_in.append(True)
                 login_user(user)
+                print(user_is_logged_in)
                 return redirect(url_for('index'))
 
     # POST request - Handle form data from client
@@ -134,7 +135,7 @@ def login():
 @login_required
 def logout():
     cart = []
-    user_is_logged_in = False 
+    user_is_logged_in.append(False)
     logout_user()
     return redirect(url_for('login'))
 
@@ -198,7 +199,7 @@ def searchProduct(product):
     # Retrieve database information corresponding to the searched product
 
 
-    return render_template('search_results.html', show_navbar=True, products=products, product=product, user_is_logged_in=user_is_logged_in)
+    return render_template('search_results.html', show_navbar=True, products=products, product=product, user_is_logged_in=user_is_logged_in[len(user_is_logged_in)-1])
 
 
 
@@ -248,7 +249,7 @@ def productInfo(product_name):
             #  'Reviews': [{'Review': 'This phone is absolutely amazing!', 'Rating': 5}, {'Review': 'This phone sucks!', 'Rating': 1}]
         # }
 
-        return render_template('product_details.html', show_navbar=True, product_info=productInfoDic, user_is_logged_in=user_is_logged_in)
+        return render_template('product_details.html', show_navbar=True, product_info=productInfoDic, user_is_logged_in=user_is_logged_in[len(user_is_logged_in)-1])
     else:
         print("do something")
         # DISREGARD ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -311,7 +312,7 @@ def shoppingCart():
             for cart_item in cart:
                 item = Product.query.filter_by(name=cart_item).first()
                 cart_items.append(item)
-            return render_template("cart.html", show_navbar=True, cart_items=cart_items, subtotal=subtotal, total=total, user_is_logged_in=user_is_logged_in)
+            return render_template("cart.html", show_navbar=True, cart_items=cart_items, subtotal=subtotal, total=total, user_is_logged_in=user_is_logged_in[len(user_is_logged_in)-1])
         elif action[0] == 'add':
             pass
     # GET request - return cart page to the client
@@ -369,7 +370,7 @@ def shoppingCart():
 
     # Using session list ----------------------------------------------------------------------------------------------------------------------------------------------
 
-    return render_template("cart.html", show_navbar=True, cart_items=cart_items, subtotal=subtotal, total=total, user_is_logged_in=user_is_logged_in)
+    return render_template("cart.html", show_navbar=True, cart_items=cart_items, subtotal=subtotal, total=total, user_is_logged_in=user_is_logged_in[len(user_is_logged_in)-1])
 
 
 @app.route("/checkout", methods=['POST', 'GET'])
@@ -457,7 +458,7 @@ def checkout():
     tax = round(0.1 * (subtotal + shipping), 2)
     total = tax + subtotal + shipping
 
-    return render_template("checkout.html", show_navbar=True, cart_items=cart_items, subtotal=subtotal, tax=tax, total=total, user_is_logged_in=user_is_logged_in)
+    return render_template("checkout.html", show_navbar=True, cart_items=cart_items, subtotal=subtotal, tax=tax, total=total, user_is_logged_in=user_is_logged_in[len(user_is_logged_in)-1])
 
 
 @app.route("/order_confirmation", methods=['GET'])

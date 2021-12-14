@@ -4,6 +4,41 @@
 {% endblock %}
 {% block title %}Checkout{% endblock %} 
 {% block content %} 
+<nav class="navbar">
+    <div class="navbar-content-container">
+        <div class="navbar-content-left">
+            <a href="{{ url_for('index') }}" class="logo">emazon</a>
+        </div>
+        <div class="navbar-content-right">
+            <div class="search-bar-container">
+                <div id="search-form" class="search-bar-left">
+                    <input 
+                        type="text" 
+                        class="search-bar-input-field"
+                        placeholder="Search for a product..."
+                        name="search_phrase"
+                        onkeypress="handleSearch(event)"
+                    >
+                </div>
+                <div class="search-bar-right">
+                    <button class="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            {% if user_is_logged_in == True %}
+                <button class="user-button">
+                    <i class="fas fa-user-circle"></i>
+                </button>
+            {% else %} 
+                <a href="{{ url_for('login') }}" class="sign-in-button">Sign in</a>
+            {% endif %}
+            <a href="{{ url_for('shoppingCart') }}" class="cart-button">
+                <i class="fas fa-shopping-cart"></i>
+            </a>
+        </div>
+    </div>
+</nav>
     <div class="checkout-page-container">
         <div class="checkout-page-left-container">
             <div class="checkout-container">

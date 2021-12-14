@@ -314,6 +314,13 @@ def shoppingCart():
             for cart_item in cart:
                 item = Product.query.filter_by(name=cart_item).first()
                 cart_items.append(item)
+                
+            subtotal = 0
+            for cart_item in cart_items:
+                subtotal += cart_item.price
+
+            shipping = 0
+            total = subtotal + shipping
             return render_template("cart.html", show_navbar=True, cart_items=cart_items, subtotal=subtotal, total=total, user_is_logged_in=user_is_logged_in[len(user_is_logged_in)-1])
         elif action[0] == 'add':
             pass

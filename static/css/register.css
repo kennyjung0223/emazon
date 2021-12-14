@@ -24,6 +24,10 @@
     margin-bottom: 1.67rem;
 }
 
+.input-container{
+    padding-bottom: 1rem;
+}
+
 .inputs{
     background-color: #182228;
     color: #F8F8F8;
@@ -64,6 +68,10 @@
     border: 0.0625rem solid #283A46;
 }
 /* ------- Remember Me, UPDATE LATER -------*/
+
+.button-container{
+    padding-top: 1rem;
+}
 
 .button-custom{
     min-width: 67%;

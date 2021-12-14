@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -22,33 +23,22 @@
                         <h1 class="logo login-header">Sign in</h1>
                     </div>
                     
-                    <div class="row-fluid">
+                    <div class="row-fluid"> 
                         <form action="" method="POST">
-                            <!-- Safe from CRF attacks -->
+                            <!-- Safe from CSRF attacks -->
                             {{ form.hidden_tag() }}
-                            <fieldset>
-                                <div class="form-group">
-                                    {{ form.email(class="inputs", placeholder="Email address") }}
-                                </div>
-                                <div class="form-group">
-                                    {{ form.password(class="inputs", placeholder="Password") }}
-                                </div>
-                                <!-- Remember Me, UPDATE LATER -->
-                                <div class="row" style="margin-top: 1rem; margin-bottom: 1rem;">
-                                    <div class="col-2"></div>
-                                    <div class="col-5">
-                                        <label class="checkbox-label">
-                                            <input type="checkbox">
-                                            <span class="checkbox-custom"></span>
-                                            <div style="margin-right: 0.33rem; color: #F8F8F8; font-weight: lighter;">Remember Me</div>
-                                        </label>
-                                    </div>
-                                </div>
-                                <!-- Remember Me, UPDATE LATER -->
-                            </fieldset>
-                            <div class="field-group">
-                                {{ form.submit(class='button-custom') }}
+                            <div class="input-container">
+                                {{ form.username(class_="inputs")}}
                             </div>
+                            <div class="input-container">
+                                {{ form.password(class_="inputs")}}
+                            </div>
+                            <div class="button-container">
+                                {{ form.submit(class_="button-custom")}}
+                            </div>
+
+                            <!-- old code here -->
+
                         </form>
                         <div class="row-fluid">
                             <div class="register-text">Don't have an account? Register

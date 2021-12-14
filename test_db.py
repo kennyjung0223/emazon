@@ -1,4 +1,5 @@
 from db import db, User, Order, Product, OrderDetail, Review, Address
+# from app import stripe, generate_card_token, create_payment_charge
 import json
 
 users = User.query.all()
@@ -8,9 +9,20 @@ addresses = Address.query.all()
 orders = Order.query.all()
 order_details = OrderDetail.query.all()
 
+''' 
+returns a list of tuples
+
+i.e. iphones = [
+	(1, 'iPhone 13 Pro', 'The newest iPhone right now!', 1199.99, 'default.jpg', 'Apple', 'Electronics', 5)
+	(6, 'iPhone 13 Pro Max', 'The best iPhone right now!', 1399.99, 'default.jpg', 'Apple', 'Electronics', 5)
+]
+'''
+iphones = db.session.execute('SELECT * FROM Product WHERE name LIKE :product_name', {'product_name': '%iPhone%'}).fetchall()
+
+
 print("------------------- USERS -------------------")
 for user in users:
-	print(user.id, user.name, user.username, user.password)
+	print(user.id, user.name, user.email, user.username, user.password)
  
 print("------------------- PRODUCTS -------------------")
 for product in products:
@@ -31,6 +43,11 @@ for order in orders:
 print("------------------- ORDER DETAILS -------------------")
 for order_detail in order_details:
     print(order_detail.id, order_detail.order_id, order_detail.product.name, order_detail.count)
+
+
+print("------------------- SEARCHING FOR iPHONES -------------------")
+for iphone in iphones:
+    print(iphone)
 
 print("\nSearching for one product (example: iPhone 13 Pro)-------------------------------------------")
 
@@ -152,3 +169,27 @@ print("Address: \n\t"+ orderForLebron.address.street + "\n\t" + orderForLebron.a
 print("payment information")
 print(json.dumps(orderForLebronDic))
 
+# print("TESTING STRIPE PAYMENT PROCESSING")
+# card_number = "4242424242424242"
+# exp_month = 12
+# exp_year = 2021
+# cvc = 314
+# amount = 299.99
+
+# card_data = {
+# 	"number": str(card_number),
+# 	"exp_month": int(exp_month),
+# 	"exp_year": int(exp_year),
+# 	"cvc": str(cvc)
+# }
+
+# try:
+# 	token = generate_card_token(card_data)
+# 	paid = create_payment_charge(token, amount)
+
+# 	if paid:
+# 		print("Payment was successful")
+# 	else:
+# 		print("Payment was unsuccessful")
+# except stripe.error.CardError as e:
+# 	print(f"ERROR: {e.user_message} ")

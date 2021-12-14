@@ -15,7 +15,10 @@
                     <div class="reviews-display">
                         <div class="reviews-display-left">
                             {% for i in range(product_info.avg_rating)  %}
-                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star colored-star"></i>
+                            {% endfor %}
+                            {% for i in range(5 - product_info.avg_rating)  %}
+                            <i class="fas fa-star"></i>
                             {% endfor %}
                         </div>
                         <div class="reviews-display-right">
@@ -62,7 +65,10 @@
                             <div class="reviews-display">
                                 <div class="reviews-display-left">
                                     {% for i in range(review.Rating) %}
-                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star colored-star"></i>
+                                    {% endfor %}
+                                    {% for i in range(5 - product_info.avg_rating)  %}
+                                    <i class="fas fa-star"></i>
                                     {% endfor %}
                                 </div>
                                 <!-- <div class="reviews-display-right">

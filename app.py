@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, url_for, redirect
+from db import app
+from db import *
 
-app = Flask(__name__)
+# app = Flask(__name__)
 
 # This is the home page (aka the products page)
 @app.route("/")

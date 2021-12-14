@@ -1,4 +1,5 @@
 from db import db, User, Order, Product, OrderDetail, Review, Address
+from datetime import datetime
 
 ### add users ###
 
@@ -41,23 +42,26 @@ for product in products:
 ### add reviews ###
 
 reviews = [
-    (1, "This phone is absolutely amazing!", 5),
-    (1, "This phone sucks!", 1),
-    (2, "This laptop is pretty good.", 4),
-    (3, "This basketball sucks, it is hard to get adjusted to.", 1),
-    (4, "These slides are so comfortable!", 5),
-    (5, "This book helped me land offers at Facebook, Google, Amazon, and Netflix!", 5)
+    (1, 1, "This phone is absolutely amazing!", 5),
+    (1, 2, "This phone sucks!", 1),
+    (2, 1, "This laptop is pretty good.", 4),
+    (3, 2, "This basketball sucks, it is hard to get adjusted to.", 1),
+    (4, 2, "These slides are so comfortable!", 5),
+    (5, 3, "This book helped me land offers at Facebook, Google, Amazon, and Netflix!", 5)
 ]
 
 for review in reviews:
     product_id = review[0]
-    description = review[1]
-    rating = review[2]
+    user_id = review[1]
+    description = review[2]
+    rating = review[3]
     
     p = Product.query.filter_by(id=product_id).first()
+    u = User.query.filter_by(id=user_id).first()
     r = Review(
             # product_id=product_id,
             product=p,
+            user=u,
             description=description,
             rating=rating
     )
@@ -83,9 +87,9 @@ for address in addresses:
 ### add orders ###
 
 orders = [
-    (1, 1, "12/08/2021", 3199.98, 319.99, 0),
-    (2, 2, "12/09/2021", 74.98, 7.49, 5),
-    (3, 3, "12/10/2021", 39.99, 3.99, 10)
+    (1, 1, datetime(2021, 12, 8), 3199.98, 319.99, 0),
+    (2, 2, datetime(2021, 12, 9), 74.98, 7.49, 5),
+    (3, 3, datetime(2021, 12, 10), 39.99, 3.99, 10)
 ]
 
 for order in orders:

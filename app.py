@@ -87,45 +87,64 @@ def searchProduct(product):
     return render_template('search_results.html', show_navbar=True)
 
 
-@app.route("/product/<product_name>", methods = ['GET'])
+@app.route("/product/<product_name>", methods = ['GET', 'POST'])
 def productInfo(product_name):
-    productName = product_name
-    product = Product.query.filter_by(name = productName).first()
-    productInfoDic = {
-        'name':product.name,
-        'description':product.description,
-        'price':product.price,
-        'picture':product.picture,
-        'brand':product.brand,
-        'category':product.category,
-        'stock count':product.stock_count
-    }
-    productReview = Review.query.filter_by(product_id = product.id).all()
-    listOfReviewsForProduct = []
-    print(productReview)
-    for eachReview in productReview:
-        temp = {
-            'Review':eachReview.description,
-            'Rating':eachReview.rating
+    if request.method == 'GET':
+        productName = product_name
+        product = Product.query.filter_by(name = productName).first()
+        productInfoDic = {
+            'name':product.name,
+            'description':product.description,
+            'price':product.price,
+            'picture':product.picture,
+            'brand':product.brand,
+            'category':product.category,
+            'stock count':product.stock_count
         }
-        listOfReviewsForProduct.append(temp)
-    productInfoDic['Reviews'] = listOfReviewsForProduct
-    # productInfoDic looks like this when outputted with the example of 'iPhone 13 Pro':
-    # {
-        #  'name': 'iPhone 13 Pro', 
-        #  'description': 'The newest iPhone right now!',
-        #  'price': 1199.99,
-        #  'picture': 'default.jpg',
-        #  'brand': 'Apple', 
-        #  'category': 'Electronics',
-        #  'stock count': 5,
-        #  'Reviews': [{'Review': 'This phone is absolutely amazing!', 'Rating': 5}, {'Review': 'This phone sucks!', 'Rating': 1}]
-    # }
-        
-    return render_template('product_details.html', show_navbar=True)
+        productReview = Review.query.filter_by(product_id = product.id).all()
+        listOfReviewsForProduct = []
+        print(productReview)
+        for eachReview in productReview:
+            temp = {
+                'Review':eachReview.description,
+                'Rating':eachReview.rating
+            }
+            listOfReviewsForProduct.append(temp)
+        productInfoDic['Reviews'] = listOfReviewsForProduct
+        # productInfoDic looks like this when outputted with the example of 'iPhone 13 Pro':
+        # {
+            #  'name': 'iPhone 13 Pro', 
+            #  'description': 'The newest iPhone right now!',
+            #  'price': 1199.99,
+            #  'picture': 'default.jpg',
+            #  'brand': 'Apple', 
+            #  'category': 'Electronics',
+            #  'stock count': 5,
+            #  'Reviews': [{'Review': 'This phone is absolutely amazing!', 'Rating': 5}, {'Review': 'This phone sucks!', 'Rating': 1}]
+        # }
+        return render_template('product_details.html', show_navbar=True)
+    else:
+        print("do something")
+        # This is the hypothetical POST method to add to cart
+        # Date is something I assume can be pulled from the front end directly, and shipping fee as well as address is something that can be calculated/added in the 'checkout' app route
+        # Adding something to cart
+        # user = User.query.filter_by(username = Username).first()
+        # productName = product_name
+        # p = Product.query.filter_by(name = productName).first()
+        # newOrder = Order(user_id = user.id, address_id = 0, date = '', subtotal = 0, tax = 0, shipping_fee = 0)
+        # o = Order.query.filter_by(id=newOrder.id).first()
+        # c = quantityOfProduct
+        # newProductAddition = OrderDetail(order = o, product = p, count = c)
+        # db.session.add(newOrder)
+        # db.session.add(newProductAddition)
+        # db.session.commit()
+        # Order.query.filter_by(newOrder.id).update({'subtotal': (Order.subtotal + p.price)})
+        # Order.query.filter_by(newOrder.id).update({'tax': (Order.subtotal*0.1)})
+
+
     
 
-# Not sure whether to add a username argument for this app route or if username will be a variable you can call throughout the program with the use of Flask Logun
+# Not sure whether to add a username argument for this app route or if username will be a variable you can call throughout the program with the use of Flask Login
 @app.route("/cart", methods = ['POST', 'GET'])
 def shoppingCart():
     # POST request - Handle change in quantity removing an item from the cart

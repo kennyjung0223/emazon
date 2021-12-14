@@ -5,13 +5,13 @@
 }
 
 body {
-    background-color: #18232C;
-    color: #F8F8F8;
-    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    background-color: #18232C !important;
+    color: #F8F8F8 !important;
+    font-family: 'Inter', Arial, Helvetica, sans-serif !important;
     line-height: 24px;
 }
 
-h1 {
+h1, h3, h5{
     font-family: 'Poppins', Arial, Helvetica, sans-serif;
     font-weight: bold;
 }
@@ -32,6 +32,14 @@ h1 {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+
+.logo {
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-size: 32px;
+    text-decoration: none;
+    color: #F8F8F8;
+
 }
 
 .navbar-content-right {
@@ -105,7 +113,10 @@ h1 {
     outline: 1px solid #F8F8F8;
     border-radius: 8px;
     transition: all .35s ease-in-out;
+    display: flex;
+    align-items: center;
     box-sizing: border-box;
+    text-decoration: none;
 }
 
 .sign-in-button:hover {
@@ -119,6 +130,10 @@ h1 {
 .cart-button {
     padding: 0 20px;
     transition: all .35s ease-in-out;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    font-size: 20px;
 }
 
 .cart-button:hover {

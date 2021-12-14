@@ -1,29 +1,80 @@
 from db import db, User, Order, Product, OrderDetail, Review, Address
+from datetime import datetime
 
 ### add users ###
 
 users = [
-    ("Jeff Bezos", "jbezos", "helloworld123"),
-    ("Lebron James", "ljames", "helloworld123"),
-    ("Ammon Hepworth", "ahepworth", "helloworld123")
+    ("Jeff Bezos", "jbezos@email.com", "jbezos", "helloworld123"),
+    ("Lebron James", "ljames@email.com", "ljames", "helloworld123"),
+    ("Ammon Hepworth", "ahepworth@email.com", "ahepworth", "helloworld123")
 ]
 
 for user in users:
     name = user[0]
-    username = user[1]
-    password = user[2]
+    email = user[1]
+    username = user[2]
+    password = user[3]
     
-    u = User(name=name, username=username, password=password)
+    u = User(name=name, email=email, username=username, password=password)
     db.session.add(u)
 
 ### add products ###
 
 products = [
-    ("iPhone 13 Pro", "The newest iPhone right now!", 1199.99, "default.jpg", "Apple", "Electronics", 5),
-    ("MacBook Pro 2021", "The newest MacBook Pro right now!", 1999.99, "default.jpg", "Apple", "Electronics", 5),
-    ("Wilson Basketball 2021", "The new NBA basketball!", 39.99, "default.jpg", "Wilson", "Sports", 5),
-    ("Adidas Comfort Slides", "Adidas comfort slides for your feet!", 34.99, "default.jpg", "Adidas", "Clothes", 5),
-    ("Cracking the Coding Interview", "The best book to prepare for technical interviews!", 39.99, "default.jpg", "Gayle Laakmann McDowell", "Books", 5),
+    (
+        "iPhone 13 Pro", 
+        "The newest iPhone right now! Features a 6.1-inch Super Retina XDR display with ProMotion and 128GB of storage.", 
+        1199.99, 
+        "https://m.media-amazon.com/images/I/61D84NtVgVL.jpg", 
+        "Apple", 
+        "Electronics", 
+        5
+    ),
+    (
+        "16-inch MacBook Pro 2021", 
+        "The newest MacBook Pro right now! Features the latest M1 Max processor, 32GB of RAM, and a 2TB SSD. Blazing-fast performance.", 
+        1999.99, 
+        "https://pisces.bbystatic.com/image2/BestBuy_US/images/products/6450/6450853_sd.jpg", 
+        "Apple", 
+        "Electronics", 
+        5
+    ),
+    (
+        "Wilson Basketball 2021", 
+        "The new NBA basketball!", 
+        39.99, 
+        "https://i5.walmartimages.com/asr/199c2572-2887-4cd4-80f0-48ae4fad9810_1.2dbc454e8ebc7c58f3082e53e78fba81.jpeg", 
+        "Wilson", 
+        "Sports", 
+        5
+    ),
+    (
+        "Adidas Comfort Slides", 
+        "Comfortable slides for your feet!", 
+        34.99, 
+        "https://assets.adidas.com/images/w_600,f_auto,q_auto/da363cc138f945b19850a80e010fa6e2_9366/Adilette_Comfort_Slides_Black_AP9966_01_standard.jpg", 
+        "Adidas", 
+        "Clothes", 
+        5
+    ),
+    (
+        "Cracking the Coding Interview", 
+        "The best book to prepare for technical interviews!", 
+        39.99, 
+        "https://miro.medium.com/max/476/1*P7pTGa-PMfCq1VWuNJioig.png", 
+        "Gayle Laakmann McDowell", 
+        "Books", 
+        5
+    ),
+    (
+        "Apple Watch Series 7", 
+        "The Apple Watch Series 7 is the latest smartwatch from Apple. It features an aluminum case made from recycled aerospace-grade alloy.", 
+        429.00, 
+        "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MKUW3_VW_34FR+watch-45-alum-blue-nc-7s_VW_34FR_WF_CO?wid=1400&hei=1400&trim=1,0&fmt=p-jpg&qlt=95&.v=1632171100000,1631661591000",
+        "Apple",
+        "Electronics",
+        15
+    )
 ]
 
 for product in products:
@@ -41,23 +92,26 @@ for product in products:
 ### add reviews ###
 
 reviews = [
-    (1, "This phone is absolutely amazing!", 5),
-    (1, "This phone sucks!", 1),
-    (2, "This laptop is pretty good.", 4),
-    (3, "This basketball sucks, it is hard to get adjusted to.", 1),
-    (4, "These slides are so comfortable!", 5),
-    (5, "This book helped me land offers at Facebook, Google, Amazon, and Netflix!", 5)
+    (1, 1, "This phone is absolutely amazing!", 5),
+    (1, 2, "This phone sucks!", 1),
+    (2, 1, "This laptop is pretty good.", 4),
+    (3, 2, "This basketball sucks, it is hard to get adjusted to.", 1),
+    (4, 2, "These slides are so comfortable!", 5),
+    (5, 3, "This book helped me land offers at Facebook, Google, Amazon, and Netflix!", 5)
 ]
 
 for review in reviews:
     product_id = review[0]
-    description = review[1]
-    rating = review[2]
+    user_id = review[1]
+    description = review[2]
+    rating = review[3]
     
     p = Product.query.filter_by(id=product_id).first()
+    u = User.query.filter_by(id=user_id).first()
     r = Review(
             # product_id=product_id,
             product=p,
+            user=u,
             description=description,
             rating=rating
     )
@@ -83,9 +137,9 @@ for address in addresses:
 ### add orders ###
 
 orders = [
-    (1, 1, "12/08/2021", 3199.98, 319.99, 0),
-    (2, 2, "12/09/2021", 74.98, 7.49, 5),
-    (3, 3, "12/10/2021", 39.99, 3.99, 10)
+    (1, 1, datetime(2021, 12, 8), 3199.98, 319.99, 0),
+    (2, 2, datetime(2021, 12, 9), 74.98, 7.49, 5),
+    (3, 3, datetime(2021, 12, 10), 39.99, 3.99, 10)
 ]
 
 for order in orders:

@@ -1,8 +1,49 @@
 from flask import Flask, render_template, request, url_for, redirect, session
+from os import linesep
+from wtforms.widgets.core import Input
 from db import app
 from db import *
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import InputRequired, Length, ValidationError, Email, email_validator
+from flask_bcrypt import Bcrypt
+from flask_login import login_manager, login_user, LoginManager, login_required, logout_user, current_user
+import stripe
+
 
 # app = Flask(__name__)
+app.config['SECRET_KEY'] = 'testkey'
+stripe.api_key = 'sk_test_4eC39HqLyjWDarjtT1zdp7dc'
+bcrypt = Bcrypt(app) 
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
+
+class RegisterForm(FlaskForm):
+    username = StringField(validators=[InputRequired(), Length(min=4,max=15)], render_kw={"placeholder": "Username"})
+    name = StringField(validators=[InputRequired(), Length(min=2,max=50)], render_kw={"placeholder": "Name"})
+    email = StringField(validators=[InputRequired(), Email(message="Invalid email response"), Length(max=50)], render_kw={"placeholder": "Email"})
+    password = PasswordField(validators=[InputRequired(), Length(min=8, max=80)], render_kw={"placeholder": "Password"})
+    submit = SubmitField('Create account')
+    # rememberMe = BooleanField('Remember Me')
+
+    def validate_username(self, username):
+        exist = User.query.filter_by(username=username.data).first()
+        if exist:
+            raise ValidationError("Username already exists. Please enter another username.")
+
+
+class LoginForm(FlaskForm):
+    username = StringField(validators=[InputRequired(), Length(min=4,max=15)], render_kw={"placeholder": "Username"})
+    password = PasswordField(validators=[InputRequired(), Length(min=8, max=80)], render_kw={"placeholder": "Password"})
+    submit = SubmitField('Sign in')
+    # rememberMe = BooleanField('Remember Me')
 
 session['cart items'] = []
 
@@ -32,13 +73,24 @@ def index():
     return render_template('home.html', show_navbar=True, signed_in=False)
 
 
-@app.route("/login", methods = ['POST', 'GET'])
+@app.route("/login", methods=['POST', 'GET'])
 def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            if bcrypt.check_password_hash(user.password, form.password.data):
+                login_user(user)
+                return redirect(url_for('index'))
+
     # POST request - Handle form data from client
-    if request.method == "POST":
-        print("Post executed")
-        # Username = username
-        # Password = password
+    # if request.method == "POST":
+        # if form.validate_on_submit():
+        #     return '<h1>' + form.username.data + ' '
+
+        # # print("Post executed")
+        # Username = request.form["username"]
+        # Password = request.form["password"]
         # user = User.query.filter_by(username=Username).first()
 
         # if user is None or not user.check_password(password):
@@ -46,11 +98,27 @@ def login():
         # return redirect(url_for('index'))
 
     # Otherwise, GET request - Return login page to client
-    return render_template('login.html')
+    return render_template('login.html', form=form)
 
 
-@app.route("/register", methods = ['POST', 'GET'])
+@app.route('/logout', methods=['GET', 'POST'])
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
+
+
+
+@app.route("/register", methods=['POST', 'GET'])
 def register():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        hash = bcrypt.generate_password_hash(form.password.data)
+        user = User(name=form.name.data, email=form.email.data, username=form.username.data, password=hash)
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('login'))
+
     # POST request - Handle form data from client
     # if request.method == "POST":
     #     print('Register')
@@ -63,26 +131,32 @@ def register():
     # db.session.commit()
     
     # Otherwise GET request - Return register page to client
-    return render_template('register.html')
+    return render_template('register.html', form=form)
 
 
-@app.route("/search/<product>", methods = ['GET'])
+@app.route("/search/<product>", methods=['GET'])
 def searchProduct(product):
-    productName = product
-    product = Product.query.filter_by(name = productName).first()
-    productInfoDic = {
-        'name':product.name,
-        'price':product.price,
-        'picture':product.picture,
-        'stock count':product.stock_count
-    }
-    # productInfoDic looks like this when outputted with the example of 'iPhone 13 Pro':
-    # {
-        #  'name': 'iPhone 13 Pro', 
-        #  'price': 1199.99,
-        #  'picture': 'default.jpg',
-        #  'stock count': 5,
-    # }
+    param = ''.join(['%', product, '%'])
+    results = db.session.execute('SELECT * FROM Product WHERE name LIKE :product_name', {'product_name': param}).fetchall()
+    products = []
+    
+    for result in results:
+        # productInfoDic looks like this when outputted with the example of 'iPhone 13 Pro':
+        # {
+            #  'name': 'iPhone 13 Pro', 
+            #  'price': 1199.99,
+            #  'picture': 'default.jpg',
+            #  'stock count': 5,
+        # }
+        productInfoDic = {
+            'name':result[1],
+            'price':result[3],
+            'picture':result[4],
+            'stock count':result[-1]
+        }
+        products.append(productInfoDic)
+    
+    print(products)
 
     # Retrieve database information corresponding to the searched product
 
@@ -160,6 +234,7 @@ def productInfo(product_name):
     
 
 # Not sure whether to add a username argument for this app route or if username will be a variable you can call throughout the program with the use of Flask Login
+
 @app.route("/cart", methods = ['POST', 'GET'])
 def shoppingCart():
     # user = User.query.filter_by(username = Username).first()
@@ -182,7 +257,6 @@ def shoppingCart():
         if request.json.get('action') == 'remove':
             # remove product from cart_items
             session['cart_items'].remove(product_name)
-    
     # GET request - return cart page to the client
     # lebronUsername = 'ljames'
     
@@ -239,30 +313,65 @@ def shoppingCart():
 
     return render_template("cart.html", show_navbar=True)
 
-@app.route("/checkout", methods = ['POST', 'GET'])
+
+@app.route("/checkout", methods=['POST', 'GET'])
 def checkout():
     # POST request - Handle form data from the client
     if request.method == "POST":
-        print('User submitted the checkout form')
-    
+        print('User submitted the checkout form')\
+
+        card_name = request.form.get('card_name')
+        card_num = request.form.get('card_num')
+        card_exp_date = request.form.get('card_exp')
+        card_cvc = request.form.get('card_cvc')
+
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        address = request.form.get('address')
+        city = request.form.get('city')
+        state = request.form.get('state')
+        zip_code = request.form.get('zip_code')
+
+        card_data = {
+            'number': str(card_num),
+            'exp_month': int(card_exp_date[0:2]),
+            'exp_year': int(card_exp_date[3:5]),
+            'cvc': str(card_cvc)
+        }
+        
+        try:
+            token = generate_card_token(card_data)
+            paid = create_payment_charge(token, amount)
+            
+            if paid:
+                # render template for order confirmation
+                print("render template for order confirmation")
+            else:
+                # payment was for some reason unsuccessful
+                print("payment was for some reason unsuccessful")
+        except stripe.error.CardError as e:
+            # issue with processing the card inputs (i.e. invalid card number, invalid exp_month/exp_year, invalid cvc)
+            print(f"ERROR: {e.user_message}")
+        
     # GET request - return checkout page to client
 
-    user = User.query.filter_by(username = Username).first()
-    orderForUser = Order.query.filter_by(user_id = user.id).first()
+    # user = User.query.filter_by(username = Username).first()
+    # orderForUser = Order.query.filter_by(user_id = user.id).first()
 
-    orderDetailsForUser = OrderDetail.query.filter_by(order_id = orderForUser.id).all()
+    # orderDetailsForUser = OrderDetail.query.filter_by(order_id = orderForUser.id).all()
 
-    orderProductsForUserList = []
-    for orderProduct in orderDetailsForUser:
-        orderProductsForUserList.append({"Product":orderProduct.product.name, "Count":orderProduct.count, "Price":orderProduct.product.price, "Image":orderProduct.product.picture})
+    # orderProductsForUserList = []
+    # for orderProduct in orderDetailsForUser:
+    #     orderProductsForUserList.append({"Product":orderProduct.product.name, "Count":orderProduct.count, "Price":orderProduct.product.price, "Image":orderProduct.product.picture})
 
-    orderForUserDic = {}
-    orderForUserDic['Name'] = user.name
-    orderForUserDic['Products'] = orderProductsForUserList
-    orderForUserDic['Subtotal'] = orderForUser.subtotal
-    orderForUserDic['Tax'] = orderForUser.tax
-    orderForUserDic['Shipping Fee'] = orderForUser.shipping_fee
-    orderForUserDic['Total'] = orderForUserDic['Subtotal'] + orderForUserDic['Tax'] + orderForUserDic['Shipping Fee']
+    # orderForUserDic = {}
+    # orderForUserDic['Name'] = user.name
+    # orderForUserDic['Products'] = orderProductsForUserList
+    # orderForUserDic['Subtotal'] = orderForUser.subtotal
+    # orderForUserDic['Tax'] = orderForUser.tax
+    # orderForUserDic['Shipping Fee'] = orderForUser.shipping_fee
+    # orderForUserDic['Total'] = orderForUserDic['Subtotal'] + orderForUserDic['Tax'] + orderForUserDic['Shipping Fee']
+
     # orderForUserDic looks like this when outputted with 'ljames' username as an example
     # {
         # 'Name': 'Lebron James', 
@@ -274,12 +383,31 @@ def checkout():
     # }
     return render_template("checkout.html", show_navbar=True)
 
-@app.route("/order_confirmation", methods = ['GET'])
+
+@app.route("/order_confirmation", methods=['GET'])
 def orderConfirmation():
     print("Order confirmation")
-    
+
     return render_template("order_confirmation.html", show_navbar=True)
 
+
+def generate_card_token(card_data):
+    data = stripe.Token.create(card=card_data)
+    card_token = data['id']
+
+    return card_token
+
+def create_payment_charge(token, amount):
+    payment = stripe.Charge.create(
+                amount=int(amount * 100),
+                currency='usd',
+                source=token,
+                description='Test charge'
+            )
+
+    payment_check = payment['paid']
+
+    return payment_check
 
 if __name__ == "__main__":
     app.run()

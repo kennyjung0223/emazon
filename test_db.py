@@ -38,7 +38,7 @@ for address in addresses:
  
 print("------------------- ORDERS -------------------")
 for order in orders:
-    print(order.id, order.user_id, order.user.username, order.address_id, order.address.street, order.date, order.subtotal, order.tax, order.shipping_fee)
+    print(order.id, order.user_id, order.user.username, order.address_id, order.address.street, order.date, order.subtotal, order.tax, order.shipping_fee, order.products)
     
 print("------------------- ORDER DETAILS -------------------")
 for order_detail in order_details:

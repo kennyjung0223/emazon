@@ -225,7 +225,7 @@ def productInfo(product_name):
         for eachReview in productReview:
             temp = {
                 'Review':eachReview.description,
-                # 'User':user.name,
+                'User':eachReview.user.name,
                 'Rating':eachReview.rating
             }
             sum += eachReview.rating

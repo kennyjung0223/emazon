@@ -58,7 +58,7 @@
                 <div class="customer-reviews">
                     {% for review in product_info.Reviews %}
                         <div class="review-container">
-                            <h3 class="reviewer-name">John Smith</h3>
+                            <h3 class="reviewer-name">{{review.User}}</h3>
                             <div class="reviews-display">
                                 <div class="reviews-display-left">
                                     {% for i in range(review.Rating) %}

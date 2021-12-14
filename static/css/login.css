@@ -24,6 +24,10 @@
     margin-bottom: 1.67rem;
 }
 
+.input-container{
+    padding-bottom: 1rem;
+}
+
 .inputs{
     background-color: #182228;
     color: #F8F8F8;
@@ -38,26 +42,6 @@
         outline:none;
     }
 
-/* ------- Remember Me, UPDATE LATER -------*/
-.checkbox-label input{
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-}
-.checkbox-label .checkbox-custom{
-    position: absolute;
-    top: 0rem;
-    left: 0rem;
-    width: 1.25rem;
-    height: 1.25rem;
-    margin-left: 0.65rem;
-    margin-top: 0.13rem;
-    background-color: #1D2931;
-    border-radius: 0.3125rem;
-    border: 0.0625rem solid #283A46;
-}
-/* ------- Remember Me, UPDATE LATER -------*/
-
 .button-custom{
     min-width: 67%;
     min-height: 3rem;
@@ -67,6 +51,10 @@
 
     background-color: #08D99A;
     color: #1D2931;
+}
+
+.button-container{
+    padding-top: 1rem;
 }
 
 .register-text{

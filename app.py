@@ -1,8 +1,25 @@
 from flask import Flask, render_template, request, url_for, redirect
 from db import app
 from db import *
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms.validators import DataRequired, Email, Length, EqualTo
 
 # app = Flask(__name__)
+app.config['SECRET_KEY'] = 'testkey'
+
+
+class LoginForm(FlaskForm):
+    email = StringField(validators=[DataRequired(), Length(min=3, max=15)])
+    password = PasswordField(validators=[DataRequired(), Length(min=8, max=80)])
+    rememberMe = BooleanField()
+    submit = SubmitField(label='Sign in')
+
+class RegisterForm(FlaskForm):
+    email = StringField(validators=[DataRequired(), Length(min=3, max=15)])
+    password = PasswordField(validators=[DataRequired(), Length(min=8, max=80)])
+    confirmPassword = PasswordField(validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField(label='Create account')
 
 # This is the home page (aka the products page)
 @app.route("/")
@@ -30,8 +47,9 @@ def index():
     return render_template('home.html', show_navbar=True, signed_in=False)
 
 
-@app.route("/login", methods = ['POST', 'GET'])
+@app.route("/login", methods=['POST', 'GET'])
 def login():
+    form = LoginForm()
     # POST request - Handle form data from client
     if request.method == "POST":
         print("Post executed")
@@ -44,11 +62,12 @@ def login():
         # return redirect(url_for('index'))
 
     # Otherwise, GET request - Return login page to client
-    return render_template('login.html')
+    return render_template('login.html', form=form)
 
 
-@app.route("/register", methods = ['POST', 'GET'])
+@app.route("/register", methods=['POST', 'GET'])
 def register():
+    form = RegisterForm()
     # POST request - Handle form data from client
     # if request.method == "POST":
     #     print('Register')
@@ -61,10 +80,10 @@ def register():
     # db.session.commit()
     
     # Otherwise GET request - Return register page to client
-    return render_template('register.html')
+    return render_template('register.html', form=form)
 
 
-@app.route("/search/<product>", methods = ['GET'])
+@app.route("/search/<product>", methods=['GET'])
 def searchProduct(product):
     productName = product
     product = Product.query.filter_by(name = productName).first()
@@ -87,7 +106,7 @@ def searchProduct(product):
     return render_template('search_results.html', show_navbar=True)
 
 
-@app.route("/product/<product_name>", methods = ['GET'])
+@app.route("/product/<product_name>", methods=['GET'])
 def productInfo(product_name):
     productName = product_name
     product = Product.query.filter_by(name = productName).first()
@@ -121,17 +140,15 @@ def productInfo(product_name):
         #  'stock count': 5,
         #  'Reviews': [{'Review': 'This phone is absolutely amazing!', 'Rating': 5}, {'Review': 'This phone sucks!', 'Rating': 1}]
     # }
-        
     return render_template('product_details.html', show_navbar=True)
-    
 
+  
 # Not sure whether to add a username argument for this app route or if username will be a variable you can call throughout the program with the use of Flask Logun
 @app.route("/cart", methods = ['POST', 'GET'])
 def shoppingCart():
     # POST request - Handle change in quantity removing an item from the cart
     if request.method == "POST":
         print('Change in quantity or removing an item from the cart')
-    
     # GET request - return cart page to the client
     # lebronUsername = 'ljames'
     user = User.query.filter_by(username = Username).first()
@@ -155,12 +172,12 @@ def shoppingCart():
     # }
     return render_template("cart.html", show_navbar=True)
 
-@app.route("/checkout", methods = ['POST', 'GET'])
+
+@app.route("/checkout", methods=['POST', 'GET'])
 def checkout():
     # POST request - Handle form data from the client
     if request.method == "POST":
         print('User submitted the checkout form')
-    
     # GET request - return checkout page to client
 
     user = User.query.filter_by(username = Username).first()
@@ -190,10 +207,11 @@ def checkout():
     # }
     return render_template("checkout.html", show_navbar=True)
 
-@app.route("/order_confirmation", methods = ['GET'])
+
+@app.route("/order_confirmation", methods=['GET'])
 def orderConfirmation():
     print("Order confirmation")
-    
+
     return render_template("order_confirmation.html", show_navbar=True)
 
 

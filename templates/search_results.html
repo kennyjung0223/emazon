@@ -74,7 +74,11 @@
                     </a>
                 </div>
                 <div class="product-container">
-                    <h5 class="product-title">{{ i['name'] }}</h5>
+                    <form method="POST">
+                        <h5 class="product-title">
+                            <a href="{{ url_for('productInfo', product_name = i['name']) }}">{{ i['name'] }}</a>
+                        </h5>
+                    </form>
                     <div class="product-review-container">
                         {% for j in range(i['review']) %}
                             <i class="fas fa-star colored-star"></i>

@@ -7,17 +7,21 @@
     <div class="cart-page-container">
         <div class="cart-page-left-container">
             <div class="cart">
-                <h1 class="title">Shopping cart (3 items)</h1>
+                {% if cart_items | length == 1 %}
+                    <h1 class="title">Shopping cart ({{ cart_items | length }} item)</h1>
+                {% else %}
+                    <h1 class="title">Shopping cart ({{ cart_items | length }} items)</h1>
+                {% endif %}
                 <div class="cart-items">
-                    {% for i in range(3) %}
+                    {% for item in cart_items %}
                         <div class="cart-item-container">
                             <div class="cart-item-content">
                                 <div class="cart-item-content-left">
-                                    <div class="product-thumbnail"></div>
+                                    <img class="product-thumbnail" src="{{ item.picture }}" alt="{{ item.name }}" />
                                 </div>
                                 <div class="cart-item-content-center">
-                                    <h3 class="cart-item-name">iPhone 13 Pro</h3>
-                                    <div class="cart-item-content-center-bottom">
+                                    <h3 class="cart-item-name">{{ item.name }}</h3>
+                                    <div class="cart-item-content-center-bottom" method="post">
                                         <div class="quantity-container">
                                             <div class="quantity-container-left">
                                                 <p>Qty:</p>
@@ -34,12 +38,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <button class="remove-item-button">Remove</button>
+                                        <form method="post">
+                                            <button type="submit" class="remove-item-button" name="action" value="remove {{ item.name }}">Remove</button>
+                                        </form>
                                     </div>
                                 </div>
                             
                                 <div class="cart-item-content-right">
-                                    <p class="cart-item-price">$1099</p>
+                                    <p class="cart-item-price">${{ item.price }}</p>
                                 </div>
                             </div>
                         </div>
@@ -53,7 +59,9 @@
                 <div class="order-summary-top">
                     <div class="order-subtotal-container">
                         <p class="order-summary-info-title">Subtotal</p>
-                        <p class="order-summary-info-data">$37.76</p>
+                        <p class="order-summary-info-data">
+                            ${{ subtotal }}
+                        </p>
                     </div>
                     <div class="order-shipping-price-container">
                         <p class="order-summary-info-title">Shipping</p>
@@ -63,11 +71,11 @@
                 <div class="order-summary-bottom">
                     <div class="order-total-container">
                         <div class="order-summary-info-title">Total</div>
-                        <p class="order-summary-info-data">$37.16</p>
+                        <p class="order-summary-info-data">${{ total }}</p>
                     </div>
                 </div>
             </div>
-            <button class="checkout-button">Checkout</button>
+            <a href="{{ url_for('checkout') }}" class="checkout-button">Checkout</a>
         </div>
     </div>
 {% endblock %}

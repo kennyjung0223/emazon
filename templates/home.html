@@ -45,7 +45,7 @@
                     <img src="{{ url_for('static', filename='assets/fruits.jpg') }}" class="holiday-image"/>
                 </a>
             </div>
-            <div class="holiday-container">
+            <form class="holiday-container" method="post">
                 <h5 class="holiday-title">Apple iPhone 13 Pro</h5>
                 <div class="holiday-review-container">
                     {% for i in range(5)  %}
@@ -54,8 +54,8 @@
                     <span class="holiday-review-text">2,348 reviews</span>
                 </div>
                 <div class="holiday-price">$1000</div>
-                <div class="button-custom" onclick="location.href='#';">Add to Cart</div>
-            </div>
+                <button type="submit" class="button-custom" name="item" value="iPhone 13 Pro">Add to Cart</button>
+            </form>
         </div>
 
         <div class="holiday-card">
@@ -64,8 +64,8 @@
                     <img src="{{ url_for('static', filename='assets/fruits.jpg') }}" class="holiday-image"/>
                 </a>
             </div>
-            <div class="holiday-container">
-                <h5 class="holiday-title">Apple iPhone 13 Pro</h5>
+            <form class="holiday-container" method="post">
+                <h5 class="holiday-title">Cracking the Coding Interview</h5>
                 <div class="holiday-review-container">
                     {% for i in range(5)  %}
                         <i class="fas fa-star"></i>
@@ -73,7 +73,7 @@
                     <span class="holiday-review-text">2,348 reviews</span>
                 </div>
                 <div class="holiday-price">$1000</div>
-                <div class="button-custom" onclick="location.href='#';">Add to Cart</div>
+                <button type="submit" class="button-custom" name="item" value="Cracking the Coding Interview">Add to Cart</div>
             </div>
         </div>
 

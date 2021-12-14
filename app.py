@@ -11,6 +11,8 @@ from flask_bcrypt import Bcrypt
 from flask_login import login_manager, login_user, LoginManager, login_required, logout_user, current_user
 import stripe
 
+from datetime import datetime
+
 
 # app = Flask(__name__)
 app.config['SECRET_KEY'] = 'testkey'
@@ -47,11 +49,16 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign in')
     # rememberMe = BooleanField('Remember Me')
 
-session['cart items'] = []
+cart = []
 
 # This is the home page (aka the products page)
-@app.route("/")
+@app.route("/", methods = ['GET', 'POST'])
 def index():
+    if request.method == 'POST': 
+        item = request.form.get('item')
+        cart.append(item)
+
+
     allProducts = Product.query.all()
     listOfAllProductDics = []
     for i in allProducts:
@@ -82,6 +89,7 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user:
             if bcrypt.check_password_hash(user.password, form.password.data):
+                session['user'] = user.name
                 login_user(user)
                 return redirect(url_for('index'))
 
@@ -230,7 +238,7 @@ def productInfo(product_name):
         # Order.query.filter_by(newOrder.id).update({'subtotal': (Order.subtotal + p.price)})
         # Order.query.filter_by(newOrder.id).update({'tax': (Order.subtotal*0.1)})
         # DISREGARD -------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        session['cart items'].append(product_name)
+        cart.append(product_name)
 
 
     
@@ -239,13 +247,25 @@ def productInfo(product_name):
 
 @app.route("/cart", methods = ['POST', 'GET'])
 def shoppingCart():
-    # user = User.query.filter_by(username = Username).first()
+    # user = User.query.filter_by(username = session['user']).first()
     # newOrder = Order(user_id = user.id, address_id = 0, date = '', subtotal = 0, tax = 0, shipping_fee = 0)
     # db.session.add(newOrder)
     # o = Order.query.filter_by(id=newOrder.id).first()
     # c = 1
-    # for i in session['cart items']:
-    #     p = Product.query.filter_by(name = i).first()
+    cart_items = []
+
+    for cart_item in cart:
+        item = Product.query.filter_by(name = cart_item).first()
+
+        cart_items.append(item)
+
+    subtotal = 0
+    for cart_item in cart_items:
+        subtotal += cart_item.price
+
+    shipping = 0
+
+    total = subtotal + shipping
     #     newProductAddition = OrderDetail(order = o, product = p, count = c)
     #     db.session.add(newProductAddition)
     # db.session.commit()
@@ -256,9 +276,12 @@ def shoppingCart():
     # POST request - Handle change in quantity removing an item from the cart
     if request.method == "POST":
         print('Change in quantity or removing an item from the cart')
-        if request.json.get('action') == 'remove':
+        action = request.form.get('action').split(" ")
+        if action[0] == 'remove':
+            item_to_remove = " ".join(action[1:])
+            print(item_to_remove)
             # remove product from cart_items
-            session['cart_items'].remove(product_name)
+            cart.remove(item_to_remove)
     # GET request - return cart page to the client
     # lebronUsername = 'ljames'
     
@@ -286,34 +309,35 @@ def shoppingCart():
 
 
     # Using session list ----------------------------------------------------------------------------------------------------------------------------------------------
-    subtotal = 0
-    user = User.query.filter_by(username = Username).first()
-    orderProductsForUserList = []
-    for orderProduct in session['cart items']:
-        p = Product.query.filter_by(name = orderProduct).first()
-        orderProductsForUserList.append({"Product":p.product.name, "Count":p.count, "Price":p.product.price, "Image":p.product.picture})
-        subtotal += p.product.price
+    # subtotal = 0
+    # user = User.query.filter_by(username = session['user']).first()
+    # orderProductsForUserList = []
+    # for orderProduct in session['cart_items']:
+    #     p = Product.query.filter_by(name = orderProduct).first()
+    #     orderProductsForUserList.append({"Product":p.product.name, "Count":p.count, "Price":p.product.price, "Image":p.product.picture})
+    #     subtotal += p.product.price
 
-    orderForUserDic = {}
-    orderForUserDic['Name'] = user.name
-    orderForUserDic['Products'] = orderProductsForUserList
-    orderForUserDic['Subtotal'] = subtotal
+    # orderForUserDic = {}
+    # orderForUserDic['Name'] = user.name
+    # orderForUserDic['Products'] = orderProductsForUserList
+    # orderForUserDic['Subtotal'] = subtotal
 
     # Adding to the database for data storing purposes
 
-    newOrder = Order(user_id = user.id, address_id = 0, date = '', subtotal = subtotal, tax = subtotal*0.1, shipping_fee = shippingFee)
-    db.session.add(newOrder)
-    o = Order.query.filter_by(id=newOrder.id).first()
-    c = 1
-    for i in session['cart items']:
-        p = Product.query.filter_by(name = i).first()
-        newProductAddition = OrderDetail(order = o, product = p, count = c)
-        db.session.add(newProductAddition)
-    db.session.commit()
+    # shippingFee = 0 
+    # newOrder = Order(user_id = user.id, address_id = 0, date = datetime.now(), subtotal = subtotal, tax = subtotal*0.1, shipping_fee = shippingFee)
+    # db.session.add(newOrder)
+    # o = Order.query.filter_by(id=newOrder.id).first()
+    # c = 1
+    # for i in session['cart_items']:
+    #     p = Product.query.filter_by(name = i).first()
+    #     newProductAddition = OrderDetail(order = o, product = p, count = c)
+    #     db.session.add(newProductAddition)
+    # db.session.commit()
 
     # Using session list ----------------------------------------------------------------------------------------------------------------------------------------------
 
-    return render_template("cart.html", show_navbar=True)
+    return render_template("cart.html", show_navbar=True, cart_items=cart_items, subtotal=subtotal, total=total)
 
 
 @app.route("/checkout", methods=['POST', 'GET'])

@@ -1,5 +1,5 @@
 // Main JS file
-let url = "http://localhost:5000";
+let url = "";
 
 const handleSearch = (event) => {
     if (event.key === "Enter") {

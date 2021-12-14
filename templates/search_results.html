@@ -5,7 +5,7 @@
 {% block title %}Search Results{% endblock %} 
 {% block content %}
 <div class="page-container">
-    <div class="filter-by-container">
+    <!-- <div class="filter-by-container">
         <div class="filter-by-title-container">
             <h3 class="filter-by-title">Filter By</h3>
         </div>
@@ -58,7 +58,7 @@
                 <span class="review-text">1 Star</span>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <div class="search-content-container">
         <div class="search-content-title-container">
@@ -76,7 +76,7 @@
                 <div class="product-container">
                     <form method="POST">
                         <h5 class="product-title">
-                            <a href="{{ url_for('productInfo', product_name = i['name']) }}">{{ i['name'] }}</a>
+                            <a href="{{ url_for('productInfo', product_name = i['name']) }}" class="product-link">{{ i['name'] }}</a>
                         </h5>
                     </form>
                     <div class="product-review-container">

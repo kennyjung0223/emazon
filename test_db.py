@@ -22,7 +22,7 @@ iphones = db.session.execute('SELECT * FROM Product WHERE name LIKE :product_nam
 
 print("------------------- USERS -------------------")
 for user in users:
-	print(user.id, user.name, user.username, user.password)
+	print(user.id, user.name, user.email, user.username, user.password)
  
 print("------------------- PRODUCTS -------------------")
 for product in products:

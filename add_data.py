@@ -4,17 +4,18 @@ from datetime import datetime
 ### add users ###
 
 users = [
-    ("Jeff Bezos", "jbezos", "helloworld123"),
-    ("Lebron James", "ljames", "helloworld123"),
-    ("Ammon Hepworth", "ahepworth", "helloworld123")
+    ("Jeff Bezos", "jbezos@email.com", "jbezos", "helloworld123"),
+    ("Lebron James", "ljames@email.com", "ljames", "helloworld123"),
+    ("Ammon Hepworth", "ahepworth@email.com", "ahepworth", "helloworld123")
 ]
 
 for user in users:
     name = user[0]
-    username = user[1]
-    password = user[2]
+    email = user[1]
+    username = user[2]
+    password = user[3]
     
-    u = User(name=name, username=username, password=password)
+    u = User(name=name, email=email, username=username, password=password)
     db.session.add(u)
 
 ### add products ###

@@ -1,4 +1,6 @@
+from os import linesep
 from flask import Flask, render_template, request, url_for, redirect, session
+from wtforms.widgets.core import Input
 from db import app
 from db import *
 
@@ -107,14 +109,22 @@ def productInfo(product_name):
         productReview = Review.query.filter_by(product_id = product.id).all()
         listOfReviewsForProduct = []
         print(productReview)
+
+        sum = 0
+
         for eachReview in productReview:
             temp = {
                 'Review':eachReview.description,
                 # 'User':user.name,
                 'Rating':eachReview.rating
             }
+            sum += eachReview.rating
             listOfReviewsForProduct.append(temp)
+        
+        avg_rating = int(sum / len(productReview))
+
         productInfoDic['Reviews'] = listOfReviewsForProduct
+        productInfoDic['avg_rating'] = avg_rating
         # productInfoDic looks like this when outputted with the example of 'iPhone 13 Pro':
         # {
             #  'name': 'iPhone 13 Pro', 
@@ -126,7 +136,7 @@ def productInfo(product_name):
             #  'stock count': 5,
             #  'Reviews': [{'Review': 'This phone is absolutely amazing!', 'Rating': 5}, {'Review': 'This phone sucks!', 'Rating': 1}]
         # }
-        return render_template('product_details.html', show_navbar=True)
+        return render_template('product_details.html', show_navbar=True, product_info=productInfoDic)
     else:
         print("do something")
         # DISREGARD ----------------------------------------------------------------------------------------------------------------------------------------------------------------------

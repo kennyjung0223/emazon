@@ -7,6 +7,17 @@ addresses = Address.query.all()
 orders = Order.query.all()
 order_details = OrderDetail.query.all()
 
+''' 
+returns a list of tuples
+
+i.e. iphones = [
+	(1, 'iPhone 13 Pro', 'The newest iPhone right now!', 1199.99, 'default.jpg', 'Apple', 'Electronics', 5)
+	(6, 'iPhone 13 Pro Max', 'The best iPhone right now!', 1399.99, 'default.jpg', 'Apple', 'Electronics', 5)
+]
+'''
+iphones = db.session.execute('SELECT * FROM Product WHERE name LIKE :product_name', {'product_name': '%iPhone%'}).fetchall()
+
+
 print("------------------- USERS -------------------")
 for user in users:
 	print(user.id, user.name, user.username, user.password)
@@ -30,3 +41,7 @@ for order in orders:
 print("------------------- ORDER DETAILS -------------------")
 for order_detail in order_details:
     print(order_detail.id, order_detail.order_id, order_detail.product.name, order_detail.count)
+
+print("------------------- SEARCHING FOR iPHONES -------------------")
+for iphone in iphones:
+    print(iphone)

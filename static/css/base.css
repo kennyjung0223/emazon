@@ -104,6 +104,19 @@ h1, h3, h5{
     cursor: pointer;
 }
 
+.user-button {
+    background-color: transparent;
+    border: none;
+    padding: 0 16px;
+    color: #F8F8F8;
+}
+
+.user-button:hover {
+    background-color: #28353F;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
 .sign-in-button {
     padding: 0 20px;
     height: 48px;

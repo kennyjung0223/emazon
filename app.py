@@ -299,7 +299,7 @@ def shoppingCart():
     # Order.query.filter_by(newOrder.id).update({'subtotal': (Order.subtotal + p.price)})
     # Order.query.filter_by(newOrder.id).update({'tax': (Order.subtotal*0.1)})
 
-    time.sleep(1)
+    time.sleep(2)
     
     # POST request - Handle change in quantity removing an item from the cart
     if request.method == "POST":

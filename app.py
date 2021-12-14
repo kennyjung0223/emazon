@@ -91,6 +91,7 @@ def searchProduct(product):
 
 @app.route("/product/<product_name>", methods = ['GET', 'POST'])
 def productInfo(product_name):
+    user = User.query.filter_by(username = Username).first()
     if request.method == 'GET':
         productName = product_name
         product = Product.query.filter_by(name = productName).first()
@@ -109,6 +110,7 @@ def productInfo(product_name):
         for eachReview in productReview:
             temp = {
                 'Review':eachReview.description,
+                # 'User':user.name,
                 'Rating':eachReview.rating
             }
             listOfReviewsForProduct.append(temp)

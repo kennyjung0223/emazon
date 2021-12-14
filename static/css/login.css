@@ -1,0 +1,80 @@
+/* Styles for the login page */
+.logo{
+    font-size: 1.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    text-align: center;
+}
+
+.login-container{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+
+    background-color: #1D2931;
+    border-radius: 0.625rem;
+    border-style: solid;
+    border-color: #283A46;
+    border-width: 0.0625rem;
+}
+
+.login-header{
+    font-size: 1.67rem !important;
+    margin-top: 1.67rem;
+    margin-bottom: 1.67rem;
+}
+
+.inputs{
+    background-color: #182228;
+    color: #F8F8F8;
+
+    padding: 0.67rem;
+    min-width: 67%;
+    min-height: 3rem;
+    border: 0.0625rem solid #283A46;
+    border-radius: 0.625rem;
+}
+    .inputs:focus{
+        outline:none;
+    }
+
+/* ------- Remember Me, UPDATE LATER -------*/
+.checkbox-label input{
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+.checkbox-label .checkbox-custom{
+    position: absolute;
+    top: 0rem;
+    left: 0rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-left: 0.65rem;
+    margin-top: 0.13rem;
+    background-color: #1D2931;
+    border-radius: 0.3125rem;
+    border: 0.0625rem solid #283A46;
+}
+/* ------- Remember Me, UPDATE LATER -------*/
+
+.button-custom{
+    min-width: 67%;
+    min-height: 3rem;
+    margin-bottom: 1.67rem;
+    border-radius: 0.625rem;
+    border: none;
+
+    background-color: #08D99A;
+    color: #1D2931;
+}
+
+.register-text{
+    font-size: 0.80rem;
+    margin-bottom: 1.67rem;
+    color: #F8F8F8;
+}
+
+.register-here{
+    color: #08D99A !important;
+}

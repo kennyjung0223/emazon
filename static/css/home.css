@@ -1,0 +1,130 @@
+/* Styles for the home page */
+.hero-container{
+    position: relative;
+    text-align: center;
+}
+
+.hero{
+    min-width: 100%;
+    height: auto;
+}
+
+.hero-text{
+    position: absolute;
+    top: 40%;
+    left: 34.75%;
+    font-size: 1.3vw;
+}
+
+.container{
+    padding-top: 3vh;
+    padding-bottom: 3vh;
+    margin-left: 5vw;
+}
+
+.card-title{
+    font-size: 1.67rem;
+    margin-bottom: 1rem;
+}
+
+.categories{
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 1.33rem;
+}
+
+.category{
+    background-color: transparent;
+    border: 0.0625rem solid #283A46;
+    border-radius: 0.3125rem;
+    width: 22vw;
+    height: 43vh;
+    text-align: center;
+    cursor: pointer;
+}
+
+.category-image{
+    width: 20.5vw;
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+    img.category-image{
+        border-radius: 0.3125rem;
+    }
+
+.category-text{
+    font-size: 2vw;
+    font-weight: bold;
+}
+
+.holiday-cards{
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 1.33rem;
+}
+
+.holiday-card{
+    background-color: transparent;
+    border: 0.0625rem solid #283A46;
+    border-radius: 0.3125rem;
+    width: 22vw;
+    height: 56vh;
+    text-align: center;
+}
+
+.holiday-image{
+    width: 20.5vw;
+}
+    img.holiday-image{
+        border-radius: 0.3125rem;
+    }
+
+.holiday-image-container{
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.holiday-container{
+    margin-left: 0.67rem;
+    text-align: left
+}
+
+.holiday-title{
+    font-size: 1rem;
+}
+
+.holiday-review-container{
+    margin-top: 1rem;
+    margin-bottom: 0.33rem;
+}
+
+.holiday-review-text{
+    font-size: 0.85rem;
+    margin-left: 0.67rem;
+}
+
+.holiday-price{
+    font-size: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.button-custom{
+    width: 20vw;
+    background-color: transparent;
+    border: 0.0625rem solid #F8F8F8;
+    border-radius: 0.3125rem;
+    text-align: center;
+    padding-top: 0.33rem;
+    padding-bottom: 0.33rem;
+    cursor: pointer;
+}
+    .button-custom:hover{
+        background-color: #08D99A;
+        border: none;
+        color: #1D2931;
+    }
+
+.fas{
+    font-size: 0.75rem !important;
+}

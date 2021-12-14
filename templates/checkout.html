@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/checkout.css') }}">
+{% endblock %}
+{% block title %}Checkout{% endblock %} 
+{% block content %} 
+    <div class="checkout-page-container">
+        <div class="checkout-page-left-container">
+            <div class="checkout-container">
+                <h1 class="title">Checkout</h1>
+                <div class="checkout-form-container">
+                    <form class="checkout-form-content" id="checkout-form-content" method="post">
+                        <div class="checkout-form-content-payment">
+                            <h2 class="section-title">Payment Details</h2>
+                            <div class="checkout-form checkout-form-payment">
+                                <input class="checkout-input" type="text" name="card_name" id="card_name" placeholder="Name on card">
+                                <input class="checkout-input" type="text" name="card_num" id="card_num" placeholder="Card Number">
+                                <div>
+                                    <input class="checkout-input" type="text" name="card_exp" id="card_exp" placeholder="Expiration date (MM/YY)">
+                                    <input class="checkout-input" type="text" name="card_cvc" id="card_cvc" placeholder="CVC">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="checkout-form-content-shipping">
+                            <h2 class="section-title">Shipping</h2>
+                            <div class="checkout-form checkout-form-shipping">
+                                <div>
+                                    <input class="checkout-input" type="text" name="first_name" id="first_name" placeholder="First Name">
+                                    <input class="checkout-input" type="text" name="last_name" id="last_name" placeholder="Last name">
+                                </div>
+                                <input class="checkout-input" type="text" name="address" id="address" placeholder="Address">
+                                <div>
+                                    <input class="checkout-input" type="text" name="city" id="city" placeholder="City">
+                                    <input class="checkout-input" type="text" name="state" id="state" placeholder="State">
+                                    <input class="checkout-input" type="text" name="zip_code" id="zip_code" placeholder="Zip Code">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="checkout-page-right-container">
+            <h1 class="title">Order Summary</h1>
+            <div class="order-summary-container">
+                <div class="order-summary-top">
+                    {% for i in range(3) %}
+                        <div class="cart-item-container">
+                            <div class="cart-item-content">
+                                <h3 class="cart-item-name">iPhone 13 Pro</h3>
+                                <div>
+                                    <p class="cart-item-quantity">Qty: 1</p>
+                                    <p class="cart-item-price">$10.99</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="order-summary-center">
+                    <div class="order-subtotal-container">
+                        <p class="order-summary-info-title">Subtotal</p>
+                        <p class="order-summary-info-data">$37.76</p>
+                    </div>
+                    <div class="order-shipping-container">
+                        <p class="order-summary-info-title">Shipping</p>
+                        <p class="order-summary-info-data">FREE</p>
+                    </div>
+                    <div class="order-tax-container">
+                        <p class="order-summary-info-title">Tax</p>
+                        <p class="order-summary-info-data">$3.21</p>
+                    </div>
+                </div>
+                <div class="order-summary-bottom">
+                    <div class="order-total-container">
+                        <p class="order-summary-info-title">Total</p>
+                        <p class="order-summary-info-data">$40.97</p>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" form="checkout-form-content" class="place-order-button">Place order</button>
+        </div>
+    </div>
+{% endblock %} 

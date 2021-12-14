@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/order_confirmation.css') }}">
+{% endblock %}
+{% block title %}Order Confirmation{% endblock %}
+{% block content %}
+    <div class="order-confirmation-page-container">
+        <h1 class="title">Order confirmation</h1>
+        <div class="order-confirmation-details-container">
+            <h2>Thank you for shopping at emazon!</h2>
+            <div>
+                <p>Order number: 1234567890</p>
+                <p>Estimated delivery time: 2 days</p>
+            </div>
+            <button class="continue-shopping-button">Continue shopping</button>
+        </div>
+    </div>
+{% endblock %}
